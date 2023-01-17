@@ -18,7 +18,7 @@ const TaskCard: React.FC<Props> = ({
   color = "bg-darkviolet",
 }: Props) => {
   const [isCompleted, setIsCompleted] = useState<boolean>(completed);
-  
+
   return (
     <div
       className={`group flex w-full items-center justify-center gap-4 rounded-lg ${color} pr-4 shadow-lg outline outline-transparent transition-all duration-200 hover:outline-white`}
@@ -37,7 +37,7 @@ const TaskCard: React.FC<Props> = ({
         <p className="opacity-75">{description}</p>
         <div className="mt-2 rounded-xl bg-[#413681] px-2">{category}</div>
       </div>
-      <div className="flex items-center justify-center rounded-lg border border-black/10 bg-black/40 p-2 shadow-inner">
+      <div className="flex items-center justify-center rounded-lg border border-black/10 bg-black/40 p-2 shadow-inner transition-colors duration-200 group-hover:border-white">
         <h3 className="text-2xl font-bold ">{dueTime}</h3>
       </div>
     </div>
