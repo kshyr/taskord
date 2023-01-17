@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { api } from "../../utils/api";
+import TaskWidget from "../../components/TaskWidget";
 
 const NewTask: NextPage = () => {
   const [task, setTask] = useState<string>("");
@@ -27,6 +28,7 @@ const NewTask: NextPage = () => {
 
   return (
     <div className="flex h-full flex-col items-center justify-around">
+      <TaskWidget />
       <Link href={"/saved"}>
         <span
           className="rounded-full bg-white/10 px-10 py-3 font-semibold
