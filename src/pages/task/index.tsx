@@ -38,7 +38,10 @@ const NewTask: NextPage = () => {
         </span>
       </Link>
 
-      <form className="flex gap-5" onSubmit={handleSubmitTask}>
+      <form
+        className="flex flex-col gap-5 sm:flex-row"
+        onSubmit={handleSubmitTask}
+      >
         <input
           required
           className="rounded-full bg-white/10 px-10 py-3 font-semibold

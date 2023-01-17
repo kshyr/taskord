@@ -15,7 +15,7 @@ const Header: React.FC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header className="flex items-center justify-between border-b-2 bg-black py-2 px-4">
+      <header className="flex w-full items-center justify-between border-b-2 bg-black py-2 px-4">
         <div className="flex items-center justify-center">
           <Image
             src="/static/icons/logo.svg"
@@ -23,7 +23,7 @@ const Header: React.FC = () => {
             height={64}
             alt="logo"
           />
-          <h1 className="font-head text-4xl">taskord</h1>
+          <h1 className="hidden font-head text-4xl sm:block">taskord</h1>
         </div>
         <div className="flex items-center gap-8">
           <nav className="flex items-center justify-between gap-8">

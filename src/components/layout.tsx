@@ -9,7 +9,7 @@ export default function Layout({ children }: Props) {
   return (
     <>
       <Header />
-      <main className="h-full bg-black">{children}</main>
+      <main className="h-full w-full bg-black">{children}</main>
     </>
   );
 }
