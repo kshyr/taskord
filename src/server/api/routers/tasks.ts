@@ -3,7 +3,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 
 export const tasksRouter = createTRPCRouter({
-  createTask: publicProcedure
+  createTask: protectedProcedure
     .input(z.object({ title: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.task.create({
@@ -13,7 +13,7 @@ export const tasksRouter = createTRPCRouter({
       });
     }),
 
-  getTasks: publicProcedure.query(async ({ ctx }) => {
+  getTasks: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.task.findMany();
   }),
 
