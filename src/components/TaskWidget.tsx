@@ -23,7 +23,7 @@ const TaskWidget: React.FC = () => {
         description="Q11-16, p. 252"
         category="school"
         dueTime="9:00 PM"
-        color="darkred"
+        color="bg-darkred"
       />
       <TaskCard
         title="physics hw"

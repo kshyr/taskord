@@ -15,13 +15,13 @@ const TaskCard: React.FC<Props> = ({
   category,
   dueTime,
   completed = false,
-  color = "darkviolet",
+  color = "bg-darkviolet",
 }: Props) => {
   const [isCompleted, setIsCompleted] = useState<boolean>(completed);
-
+  
   return (
     <div
-      className={`group flex w-full items-center justify-center gap-4 rounded-lg bg-${color} pr-4 shadow-lg outline outline-transparent transition-all duration-200 hover:outline-white`}
+      className={`group flex w-full items-center justify-center gap-4 rounded-lg ${color} pr-4 shadow-lg outline outline-transparent transition-all duration-200 hover:outline-white`}
     >
       <div className=" flex h-full cursor-grab items-center justify-center border-r border-black border-opacity-75 bg-black/30 p-4 shadow-inner transition-colors duration-200 group-hover:border-white">
         <div
