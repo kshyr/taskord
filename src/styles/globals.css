@@ -44,3 +44,14 @@
     src: url("/static/fonts/e-UkraineHead-LOGO.otf") format("opentype");
   }
 }
+
+@layer components {
+  #__next {
+    @apply flex h-full flex-col bg-violet;
+  }
+  html,
+  body {
+    @apply h-full;
+    @apply text-white;
+  }
+}
