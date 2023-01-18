@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 import Link from "next/link";
-
+import TaskModal from "../components/TaskModal";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "../utils/api";
@@ -20,6 +20,7 @@ const Home: NextPage = () => {
           </span>
         </Link>
       </div>
+      <TaskModal />
       <div className="flex flex-col items-center gap-2">
         <p className="text-2xl text-white">
           {hello.data ? hello.data.greeting : "Loading tRPC query..."}

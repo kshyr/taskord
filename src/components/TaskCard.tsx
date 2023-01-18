@@ -1,13 +1,7 @@
 import { useState } from "react";
+import type { Task } from "./TaskWidget";
 
-type Props = {
-  title: string;
-  description?: string;
-  category?: string;
-  dueTime: string;
-  completed?: boolean;
-  color?: string;
-};
+type Props = Task;
 
 const TaskCard: React.FC<Props> = ({
   title,
