@@ -25,3 +25,8 @@ export const useTasksStore = create<TasksState>((set) => ({
     set((state) => ({ tasks: [] }));
   },
 }));
+
+type TaskModalState = {
+  stiffness: number;
+  damping: number;
+};

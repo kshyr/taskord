@@ -4,30 +4,36 @@ import TaskModal from "../components/TaskModal";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "../utils/api";
+import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
 
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   return (
-    <div className="flex h-full flex-col items-center justify-around">
-      <div>
-        <Link href={"/task"}>
-          <span
-            className="rounded-full bg-white/10 px-10 py-3 font-semibold
+    <AnimateSharedLayout>
+      <motion.div
+        layout
+        className="flex h-full flex-col items-center justify-around"
+      >
+        <motion.div layout>
+          <Link href={"/task"}>
+            <span
+              className="rounded-full bg-white/10 px-10 py-3 font-semibold
             text-white no-underline transition hover:bg-white/20"
-          >
-            New Task
-          </span>
-        </Link>
-      </div>
-      <TaskModal />
-      <div className="flex flex-col items-center gap-2">
-        <p className="text-2xl text-white">
-          {hello.data ? hello.data.greeting : "Loading tRPC query..."}
-        </p>
-        <AuthShowcase />
-      </div>
-    </div>
+            >
+              New Task
+            </span>
+          </Link>
+        </motion.div>
+        <TaskModal />
+        <motion.div layout className="flex flex-col items-center gap-2">
+          <p className="text-2xl text-white">
+            {hello.data ? hello.data.greeting : "Loading tRPC query..."}
+          </p>
+          <AuthShowcase />
+        </motion.div>
+      </motion.div>
+    </AnimateSharedLayout>
   );
 };
 
