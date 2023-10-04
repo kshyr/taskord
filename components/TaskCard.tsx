@@ -1,21 +1,19 @@
+"use client";
 import { useState } from "react";
 import type { Task } from "./TaskWidget";
 
-type Props = Task;
-
-const TaskCard: React.FC<Props> = ({
+export default function TaskCard({
   title,
   description,
   category,
   dueTime,
   completed = false,
   color = "bg-darkviolet",
-}: Props) => {
+}: Task) {
   const [isCompleted, setIsCompleted] = useState<boolean>(completed);
-
   return (
     <div
-      className={`group flex w-full items-center justify-center gap-4 rounded-lg ${color} pr-4 shadow-lg outline outline-transparent transition-all duration-200 hover:outline-white`}
+      className={`group flex h-full w-full items-center justify-center gap-4 rounded-lg ${color} pr-4 shadow-lg outline outline-transparent transition-all duration-200 hover:outline-white`}
     >
       <div className=" flex h-full cursor-grab items-center justify-center border-r border-black border-opacity-75 bg-black/30 p-4 shadow-inner transition-colors duration-200 group-hover:border-white">
         <div
@@ -36,6 +34,4 @@ const TaskCard: React.FC<Props> = ({
       </div>
     </div>
   );
-};
-
-export default TaskCard;
+}

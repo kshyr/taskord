@@ -1,15 +1,19 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
     extend: {},
     colors: {
       transparent: "transparent",
-      black: "#1E1E1E",
+      background: "#1E1E1E",
+      foreground: "#EAEAEA",
+      black: "#1A1A1A",
       darker: "#2E2E2E",
       dark: "#3E3E3E",
       gray: "#626262",
-      white: "#EAEAEA",
       violet: "#967CC0",
       darkviolet: "#765Ca0",
       green: "#00C9A6",

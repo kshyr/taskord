@@ -1,6 +1,6 @@
+"use client";
 import { useState } from "react";
 import TaskCard from "./TaskCard";
-
 export type Task = {
   title: string;
   description: string;
@@ -10,7 +10,7 @@ export type Task = {
   color?: string;
 };
 
-const TaskWidget: React.FC = () => {
+export default function TaskWidget() {
   const [tasks, setTasks] = useState<Task[]>([
     {
       title: "physics hw",
@@ -35,9 +35,9 @@ const TaskWidget: React.FC = () => {
   ]);
 
   return (
-    <section className="flex flex-col items-center justify-start gap-4 rounded-lg border border-white border-opacity-75 p-4 shadow-xl">
-      <div className="flex w-full  items-center justify-between">
-        <h1 className="ml-8 text-2xl">
+    <section className="flex h-full flex-col  gap-4 rounded-lg border border-white border-opacity-75 p-4 shadow-xl">
+      <div className="flex w-full items-center justify-between">
+        <h1 className="text-2xl">
           due <u className="text-violet">today</u>
         </h1>
         <div className="ml-auto flex items-center justify-center rounded-md border p-2 shadow-inner">
@@ -49,6 +49,4 @@ const TaskWidget: React.FC = () => {
       ))}
     </section>
   );
-};
-
-export default TaskWidget;
+}
