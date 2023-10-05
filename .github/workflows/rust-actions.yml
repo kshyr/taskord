@@ -1,0 +1,25 @@
+on: [push]
+name: Build and deploy
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          cd backend
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --all-features
+  deploy_to_shuttle:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          cd backend
+      - uses: shuttle-hq/deploy-action@main
+        with:
+          deploy-key: ${{ secrets.SHUTTLE_DEPLOY_KEY }}
