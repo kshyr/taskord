@@ -4,9 +4,10 @@ name: Build and deploy
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
     steps:
-      - run: |
-          cd backend
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
         with:
@@ -17,9 +18,10 @@ jobs:
           args: --release --all-features
   deploy_to_shuttle:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
     steps:
-      - run: |
-          cd backend
       - uses: shuttle-hq/deploy-action@main
         with:
           deploy-key: ${{ secrets.SHUTTLE_DEPLOY_KEY }}
