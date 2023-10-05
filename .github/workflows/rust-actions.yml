@@ -1,27 +1,35 @@
-on: [push]
 name: Build and deploy
+
+on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./backend
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: ls
+        run: ls -la && cd backend && ls -la
+
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --release --all-features
+
+      - name: Build backend
+        working-directory: ./backend
+        run: |
+          cargo build --release --all-features
+
   deploy_to_shuttle:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./backend
     steps:
-      - uses: shuttle-hq/deploy-action@main
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy to Shuttle
+        working-directory: ./backend
+        uses: shuttle-hq/deploy-action@main
         with:
           deploy-key: ${{ secrets.SHUTTLE_DEPLOY_KEY }}
