@@ -2,7 +2,7 @@ on: [push]
 name: Build and deploy
 
 jobs:
-  build:
+  build_and_deploy:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -13,14 +13,13 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - run: |
+
+      - name: Build release
+        run: |
             cargo build --release --all-features
-  deploy_to_shuttle:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./backend
-    steps:
-      - uses: shuttle-hq/deploy-action@main
-        with:
-          deploy-key: ${{ secrets.SHUTTLE_DEPLOY_KEY }}
+
+      - name: Deploy to Shuttle
+        run: |
+          cargo shuttle deploy
+        env:
+          SHUTTLE_API_KEY: ${{ secrets.SHUTTLE_API_KEY }}
