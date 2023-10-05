@@ -16,7 +16,11 @@ jobs:
 
       - name: Build release
         run: |
-            cargo build --release --all-features
+          cargo build --release --all-features
+
+      - name: Install cargo-shuttle
+        run: |
+          cargo install cargo-shuttle
 
       - name: Deploy to Shuttle
         run: |
