@@ -1,12 +1,17 @@
 use axum::{routing::get, Router};
+use axum::response::Html;
 
-async fn hello_world() -> &'static str {
-    "Hello, world!"
+async fn hello_world() -> Html<&'static str> {
+    Html("<h1>Hello, world!</h1>")
 }
 
-#[shuttle_runtime::main]
-async fn axum() -> shuttle_axum::ShuttleAxum {
-    let router = Router::new().route("/", get(hello_world));
+#[tokio::main]
+async fn main()  {
+    let app = Router::new().route("/", get(hello_world));
 
-    Ok(router.into())
+    let addr = "[::]:8080".parse().unwrap();
+    axum::Server::bind(&addr)
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
 }
