@@ -2,7 +2,7 @@ use axum::{routing::get, Router};
 use axum::response::Html;
 
 async fn hello_world() -> Html<&'static str> {
-    Html("<h1>Hello, world!</h1>")
+    Html("<h1>Hi!</h1>")
 }
 
 #[tokio::main]
