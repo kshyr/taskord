@@ -1,29 +1,24 @@
-on: [push]
+on: [ push ]
 name: Build and deploy
 
 jobs:
-  build_and_deploy:
+  build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./backend
     steps:
+      - run: |
+          cd backend
       - uses: actions/checkout@v2
-
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-
-      - name: Build release
-        run: |
-          cargo build --release --all-features
-
-      - name: Install cargo-shuttle
-        run: |
-          cargo install cargo-shuttle
-
-      - name: Deploy to Shuttle
-        run: |
-          cargo shuttle deploy
+      - uses: goto-bus-stop/setup-zig@v2
+      - run: cargo install cargo-zigbuild
+      - run: cargo zigbuild --release --target x86_64-unknown-linux-gnu
+  deploy_to_fly:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
         env:
-          SHUTTLE_API_KEY: ${{ secrets.SHUTTLE_API_KEY }}
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
