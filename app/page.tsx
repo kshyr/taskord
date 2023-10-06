@@ -1,7 +1,7 @@
 import TaskWidget from "@/components/TaskWidget";
 
 async function getData() {
-  const res = await fetch(process.env.API_URL as string);
+  const res = await fetch(process.env.API_URL as string, {cache: "no-cache"});
   return res.text();
 }
 
