@@ -6,7 +6,7 @@ async fn hello_world() -> Html<&'static str> {
 }
 
 #[tokio::main]
-async fn main()  {
+async fn main() {
     let app = Router::new().route("/", get(hello_world));
 
     let addr = "[::]:8080".parse().unwrap();
