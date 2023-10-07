@@ -1,0 +1,31 @@
+schema {
+  query: QueryRoot
+  mutation: MutationRoot
+}
+
+"""
+Implement the DateTime<Utc> scalar
+
+The input/output is a string in RFC3339 format.
+"""
+scalar DateTime
+
+type MutationRoot {
+  createTask(name: String!, description: String, status: Int, priority: Int): Task!
+}
+
+type QueryRoot {
+  taskById(id: Int!): Task
+  allTasks: [Task!]!
+}
+
+type Task {
+  id: Int!
+  name: String!
+  description: String
+  status: Int!
+  priority: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
