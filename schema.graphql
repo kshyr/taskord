@@ -11,6 +11,8 @@ The input/output is a string in RFC3339 format.
 scalar DateTime
 
 type MutationRoot {
+  register(username: String!, email: String!, password: String!): User!
+  authorize(username: String!, password: String!): String!
   createTask(name: String!, description: String, status: Int, priority: Int): Task!
 }
 
@@ -25,6 +27,14 @@ type Task {
   description: String
   status: Int!
   priority: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type User {
+  id: Int!
+  username: String!
+  email: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }

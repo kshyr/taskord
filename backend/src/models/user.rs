@@ -5,41 +5,30 @@ use chrono::{DateTime, Utc};
 use crate::graphql::guards::JwtGuard;
 
 #[derive(Debug, sqlx::FromRow)]
-pub struct Task {
+pub struct User {
     pub id: ID,
-    pub name: String,
-    pub description: Option<String>,
-    pub status: i16,
-    pub priority: i16,
+    pub username: String,
+    pub email: String,
+    pub password: String,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
 }
 
 #[Object]
-impl Task {
+impl User {
     #[graphql(guard = JwtGuard)]
     async fn id(&self) -> ID {
         self.id
     }
 
     #[graphql(guard = JwtGuard)]
-    async fn name(&self) -> &str {
-        &self.name
+    async fn username(&self) -> &str {
+        &self.username
     }
 
     #[graphql(guard = JwtGuard)]
-    async fn description(&self) -> Option<&str> {
-        self.description.as_deref()
-    }
-
-    #[graphql(guard = JwtGuard)]
-    async fn status(&self) -> i16 {
-        self.status
-    }
-
-    #[graphql(guard = JwtGuard)]
-    async fn priority(&self) -> i16 {
-        self.priority
+    async fn email(&self) -> &str {
+        &self.email
     }
 
     #[graphql(guard = JwtGuard)]
