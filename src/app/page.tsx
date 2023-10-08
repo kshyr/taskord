@@ -2,7 +2,7 @@ import TaskWidget from "@/src/components/TaskWidget";
 import {request, gql} from 'graphql-request'
 
 async function getData() {
-  const res = await request(process.env.API_URL, gql`
+  const res = await request(process.env.API_URL as string, gql`
     query {
       allTasks {
         id
