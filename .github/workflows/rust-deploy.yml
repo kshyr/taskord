@@ -13,6 +13,8 @@ jobs:
         working-directory: ./backend
     steps:
       - uses: actions/checkout@v3
+      - name: Create env file
+        run: echo "${{ secrets.ENV_FILE }}" > .env
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
