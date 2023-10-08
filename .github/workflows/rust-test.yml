@@ -13,6 +13,8 @@ jobs:
         working-directory: ./backend
     steps:
       - uses: actions/checkout@v3
+      - name: Create env file
+        run: echo "${{ secrets.ENV_FILE }}" > .env
       - name: Build
         run: cargo build --verbose
       - name: Run tests
