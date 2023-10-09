@@ -1,29 +1,14 @@
 import TaskWidget from "@/src/components/TaskWidget";
-import {request, gql} from 'graphql-request'
-
-async function getData() {
-  const res = await request(process.env.API_URL as string, gql`
-    query {
-      allTasks {
-        id
-        name
-        description
-        status
-        priority
-        createdAt
-        updatedAt
-      }
-    }
-  `);
-  return JSON.stringify(res)
-}
+import SignInButton from "@/src/components/SignInButton";
+import { getUserSession } from "@/src/utils/auth.utils";
 
 export default async function Home() {
-  const data = await getData();
+  const data = await getUserSession();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {data}
+      {JSON.stringify(data)}
+      <SignInButton />
       <TaskWidget />
     </main>
   );

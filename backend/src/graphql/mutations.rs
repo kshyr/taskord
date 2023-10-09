@@ -7,7 +7,7 @@ use sqlx::PgPool;
 
 use crate::graphql::guards::JwtGuard;
 use crate::models::task::Task;
-use crate::models::user::User;
+use crate::models::user::{User, UserWithToken};
 
 pub struct MutationRoot;
 
@@ -50,7 +50,7 @@ impl MutationRoot {
         ctx: &Context<'_>,
         username: String,
         password: String,
-    ) -> Result<String> {
+    ) -> Result<UserWithToken> {
         let user: User = sqlx::query_as!(
             User,
             r#"
@@ -66,7 +66,7 @@ impl MutationRoot {
         // TODO: implement refresh token
         if verify(&password, &user.password)? {
             let claims = Claims {
-                sub: user.username,
+                sub: user.username.clone(),
                 exp: (chrono::Utc::now() + chrono::Duration::hours(1)).timestamp() as usize,
             };
             let token = encode(
@@ -75,7 +75,15 @@ impl MutationRoot {
                 &EncodingKey::from_secret(jwt_secret.as_bytes()),
             )
             .unwrap();
-            Ok(token)
+            Ok(UserWithToken {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                password: user.password,
+                created_at: user.created_at,
+                updated_at: user.updated_at,
+                token,
+            })
         } else {
             Err(FieldError::new("Invalid credentials"))
         }

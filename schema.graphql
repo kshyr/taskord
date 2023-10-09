@@ -12,7 +12,7 @@ scalar DateTime
 
 type MutationRoot {
   register(username: String!, email: String!, password: String!): User!
-  authorize(username: String!, password: String!): String!
+  authorize(username: String!, password: String!): UserWithToken!
   createTask(name: String!, description: String, status: Int, priority: Int): Task!
 }
 
@@ -37,5 +37,14 @@ type User {
   email: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+type UserWithToken {
+  id: Int!
+  username: String!
+  email: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  token: String!
 }
 
