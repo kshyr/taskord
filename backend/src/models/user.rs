@@ -43,18 +43,19 @@ impl User {
 }
 
 #[derive(Debug)]
-pub struct UserWithToken {
+pub struct UserWithTokens {
     pub id: ID,
     pub username: String,
     pub email: String,
     pub password: String,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
-    pub token: String,
+    pub access_token: AccessToken,
+    pub refresh_token: String,
 }
 
 #[Object]
-impl UserWithToken {
+impl UserWithTokens {
     async fn id(&self) -> ID {
         self.id
     }
@@ -75,7 +76,28 @@ impl UserWithToken {
         self.updated_at
     }
 
+    async fn access_token(&self) -> &AccessToken {
+        &self.access_token
+    }
+
+    async fn refresh_token(&self) -> &str {
+        &self.refresh_token
+    }
+}
+
+#[derive(Debug)]
+pub struct AccessToken {
+    pub token: String,
+    pub expires_in: DateTime<Utc>,
+}
+
+#[Object]
+impl AccessToken {
     async fn token(&self) -> &str {
         &self.token
+    }
+
+    async fn expires_in(&self) -> DateTime<Utc> {
+        self.expires_in
     }
 }

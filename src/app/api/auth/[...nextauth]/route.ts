@@ -1,7 +1,40 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { gql } from "graphql-request";
-import { getPublicQueryClient } from "@/src/graphql/client";
+import { gql, GraphQLClient } from "graphql-request";
+import { apiUrl, getPublicQueryClient } from "@/src/graphql/client";
+import { JWT } from "next-auth/jwt";
+
+async function refreshToken(token: JWT): Promise<JWT> {
+  const graphQLClient = new GraphQLClient(apiUrl, {
+    headers: {
+      authorization: "Refresh " + token.user.accessToken.token,
+    },
+  });
+
+  let res: any;
+
+  try {
+    res = await graphQLClient.request(
+      gql`
+        mutation refreshToken {
+          refreshToken {
+            token
+            expiresIn
+          }
+        }
+      `,
+      { refreshToken: token.user.refreshToken },
+    );
+  } catch (e) {
+    return token;
+  }
+
+  if (res.errors) {
+    return token;
+  } else {
+    return res.refreshToken;
+  }
+}
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -32,7 +65,11 @@ export const authOptions: NextAuthOptions = {
                   email
                   createdAt
                   updatedAt
-                  token
+                  accessToken {
+                    token
+                    expiresIn
+                  }
+                  refreshToken
                 }
               }
             `,
@@ -50,6 +87,25 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+
+  callbacks: {
+    async jwt({ token, user }) {
+      console.log(token.user);
+      if (user) {
+        return { ...token, ...user };
+      }
+
+      if (new Date() < token.user.accessToken.expiresIn) {
+        return token;
+      }
+
+      return await refreshToken(token);
+    },
+    async session({ session, token }) {
+      session.user = token.user;
+      return session;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);

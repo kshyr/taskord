@@ -1,13 +1,14 @@
 use async_graphql::{Context, Object};
 use async_graphql::{Error, FieldError, Result};
 use bcrypt::{hash, verify};
-use jsonwebtoken::{encode, EncodingKey, Header};
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 
-use crate::graphql::guards::JwtGuard;
+use crate::graphql::guards::{
+    generate_access_token, generate_refresh_token, JwtGuard, JwtRefreshGuard,
+};
 use crate::models::task::Task;
-use crate::models::user::{User, UserWithToken};
+use crate::models::user::{AccessToken, User, UserWithTokens};
 
 pub struct MutationRoot;
 
@@ -50,7 +51,7 @@ impl MutationRoot {
         ctx: &Context<'_>,
         username: String,
         password: String,
-    ) -> Result<UserWithToken> {
+    ) -> Result<UserWithTokens> {
         let user: User = sqlx::query_as!(
             User,
             r#"
@@ -61,32 +62,28 @@ impl MutationRoot {
         .fetch_one(ctx.data()?)
         .await?;
 
-        let jwt_secret = dotenv::var("JWT_SECRET").expect("JWT_SECRET must be set");
-
-        // TODO: implement refresh token
         if verify(&password, &user.password)? {
-            let claims = Claims {
-                sub: user.username.clone(),
-                exp: (chrono::Utc::now() + chrono::Duration::hours(1)).timestamp() as usize,
-            };
-            let token = encode(
-                &Header::default(),
-                &claims,
-                &EncodingKey::from_secret(jwt_secret.as_bytes()),
-            )
-            .unwrap();
-            Ok(UserWithToken {
+            let access_token = generate_access_token(user.email.clone());
+            let refresh_token = generate_refresh_token(user.email.clone());
+            Ok(UserWithTokens {
                 id: user.id,
                 username: user.username,
                 email: user.email,
                 password: user.password,
                 created_at: user.created_at,
                 updated_at: user.updated_at,
-                token,
+                access_token,
+                refresh_token,
             })
         } else {
             Err(FieldError::new("Invalid credentials"))
         }
+    }
+
+    #[graphql(guard = JwtRefreshGuard)]
+    async fn refresh_token(&self) -> Result<AccessToken> {
+        let access_token = generate_access_token("".into());
+        Ok(access_token)
     }
 
     #[graphql(guard = JwtGuard)]

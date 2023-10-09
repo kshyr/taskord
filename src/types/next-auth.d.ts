@@ -1,3 +1,4 @@
+//@ts-ignore
 import NextAuth from "next-auth";
 
 declare module "next-auth" {
@@ -8,11 +9,16 @@ declare module "next-auth" {
       email: string;
       createdAt: Date;
       updatedAt: Date;
-      token: string;
+      accessToken: {
+        token: string;
+        expiresIn: Date;
+      };
+      refreshToken: string;
     };
   }
 }
 
+//@ts-ignore
 import { JWT } from "next-auth/jwt";
 
 declare module "next-auth/jwt" {
@@ -23,7 +29,11 @@ declare module "next-auth/jwt" {
       email: string;
       createdAt: Date;
       updatedAt: Date;
-      token: string;
+      accessToken: {
+        token: string;
+        expiresIn: Date;
+      };
+      refreshToken: string;
     };
   }
 }

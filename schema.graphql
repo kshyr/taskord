@@ -3,6 +3,11 @@ schema {
   mutation: MutationRoot
 }
 
+type AccessToken {
+  token: String!
+  expiresIn: DateTime!
+}
+
 """
 Implement the DateTime<Utc> scalar
 
@@ -12,7 +17,8 @@ scalar DateTime
 
 type MutationRoot {
   register(username: String!, email: String!, password: String!): User!
-  authorize(username: String!, password: String!): UserWithToken!
+  authorize(username: String!, password: String!): UserWithTokens!
+  refreshToken: AccessToken!
   createTask(name: String!, description: String, status: Int, priority: Int): Task!
 }
 
@@ -39,12 +45,13 @@ type User {
   updatedAt: DateTime!
 }
 
-type UserWithToken {
+type UserWithTokens {
   id: Int!
   username: String!
   email: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  token: String!
+  accessToken: AccessToken!
+  refreshToken: String!
 }
 
