@@ -1,6 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import request, { gql } from "graphql-request";
+import { gql } from "graphql-request";
+import { getPublicQueryClient } from "@/src/graphql/client";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -11,7 +12,7 @@ export const authOptions: NextAuthOptions = {
         username: { label: "Username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         if (!credentials?.username || !credentials?.password) {
           return null;
         }
@@ -19,9 +20,10 @@ export const authOptions: NextAuthOptions = {
         const { username, password } = credentials;
 
         let res: any;
+        const graphQLClient = getPublicQueryClient();
+
         try {
-          res = await request(
-            process.env.DEV_API_URL as string,
+          res = await graphQLClient.request(
             gql`
               mutation login($username: String!, $password: String!) {
                 authorize(username: $username, password: $password) {
