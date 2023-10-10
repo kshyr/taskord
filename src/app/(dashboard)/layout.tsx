@@ -1,5 +1,3 @@
-import AuthProvider from "@/src/components/AuthProvider";
-import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
@@ -13,21 +11,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default function DashboardLayout({
   children,
-  modal,
 }: {
   children: React.ReactNode;
-  modal: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <AuthProvider>
-          {children}
-          {modal}
-        </AuthProvider>
-      </body>
-    </html>
+    <>
+      Dashboard Layout
+      {children}
+    </>
   );
 }

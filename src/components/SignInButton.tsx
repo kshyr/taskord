@@ -14,7 +14,7 @@ export default async function SignInButton() {
   }
   return (
     <button className="bg-blue-500 hover:bg-blue-700 text-white rounded px-4 py-2 font-bold">
-      <Link href={"/api/auth/signin"}>Sign In</Link>
+      <Link href={"/signin"}>Sign In</Link>
     </button>
   );
 }
