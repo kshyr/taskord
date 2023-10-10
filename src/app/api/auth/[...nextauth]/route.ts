@@ -7,7 +7,7 @@ import { JWT } from "next-auth/jwt";
 async function refreshToken(token: JWT): Promise<JWT> {
   const graphQLClient = new GraphQLClient(apiUrl, {
     headers: {
-      authorization: "Refresh " + token.user.accessToken.token,
+      authorization: "Refresh " + token.accessToken.token,
     },
   });
 
@@ -23,7 +23,7 @@ async function refreshToken(token: JWT): Promise<JWT> {
           }
         }
       `,
-      { refreshToken: token.user.refreshToken },
+      { refreshToken: token.refreshToken },
     );
   } catch (e) {
     return token;
@@ -90,19 +90,18 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user }) {
-      console.log(token.user);
       if (user) {
-        return { ...token, ...user };
+        return { ...user, ...token };
       }
 
-      if (new Date() < token.user.accessToken.expiresIn) {
+      if (new Date() < token.accessToken.expiresIn) {
         return token;
       }
 
       return await refreshToken(token);
     },
     async session({ session, token }) {
-      session.user = token.user;
+      session.user = token;
       return session;
     },
   },
