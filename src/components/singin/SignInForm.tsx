@@ -1,10 +1,11 @@
 "use client";
 import { FormEvent, useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { Button } from "../ui/button";
 import { InputWithIcon } from "../ui/input";
 import { Label } from "../ui/label";
 import { Lock, User } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type SignInFormProps = {
   callbackUrl?: string;
@@ -12,8 +13,18 @@ type SignInFormProps = {
 };
 
 function SignInForm({ callbackUrl, error }: SignInFormProps) {
+  const { status: sessionStatus } = useSession();
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  if (sessionStatus === "loading") {
+    return null;
+  } else if (sessionStatus === "authenticated") {
+    router.replace("/dashboard");
+    return null;
+  }
+
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(username, password);
@@ -24,6 +35,7 @@ function SignInForm({ callbackUrl, error }: SignInFormProps) {
       callbackUrl: callbackUrl ?? "/dashboard",
     });
   };
+
   return (
     <form
       onSubmit={onSubmit}
