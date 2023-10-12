@@ -1,10 +1,10 @@
 "use client";
-import SignInForm from "@/src/components/singin/SignInForm";
+import SignInForm from "@/src/components/auth/SignInForm";
 import { Dialog, DialogContent } from "@/src/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-function SignInModal() {
+export default function SignInModal() {
   const { status: sessionStatus } = useSession();
   const router = useRouter();
 
@@ -26,5 +26,3 @@ function SignInModal() {
     </Dialog>
   );
 }
-
-export default SignInModal;

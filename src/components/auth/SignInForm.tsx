@@ -12,7 +12,7 @@ type SignInFormProps = {
   error?: string;
 };
 
-function SignInForm({ callbackUrl, error }: SignInFormProps) {
+export default function SignInForm({ callbackUrl, error }: SignInFormProps) {
   const { status: sessionStatus } = useSession();
   const router = useRouter();
   const [username, setUsername] = useState("");
@@ -78,5 +78,3 @@ function SignInForm({ callbackUrl, error }: SignInFormProps) {
     </form>
   );
 }
-
-export default SignInForm;
