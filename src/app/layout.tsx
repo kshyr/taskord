@@ -2,6 +2,8 @@ import AuthProvider from "@/src/components/AuthProvider";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ThemeProvider } from "@/src/components/ThemeProvider";
+import { cn } from "@/src/utils/styles.utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,10 +24,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={cn(inter.className, "min-h-screen")}>
         <AuthProvider>
-          {children}
-          {modal}
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+            {children}
+            {modal}
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>

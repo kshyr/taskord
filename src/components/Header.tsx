@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { VscBell, VscCommentDiscussion, VscSettings } from "react-icons/vsc";
+import { Bell, MessagesSquare, Settings2 } from "lucide-react";
 
 export default function Header() {
   return (
     <header className="flex w-full items-center justify-between border-b-2 bg-black px-4 py-2">
       <div className="flex items-center justify-center">
         <Image src="/static/icons/logo.svg" width={64} height={64} alt="logo" />
-        <h1 className="hidden font-head text-4xl sm:block">taskord</h1>
+        <h1 className="font-head hidden text-4xl sm:block">taskord</h1>
       </div>
       <div className="flex items-center gap-8">
         <nav className="flex items-center justify-between gap-8">
@@ -19,22 +19,22 @@ export default function Header() {
             </li>
             <li>
               <Link href="/">
-                <VscCommentDiscussion className="h-6 w-6" />
+                <MessagesSquare className="h-6 w-6" />
               </Link>
             </li>
             <li>
               <Link href="/">
-                <VscBell className="h-6 w-6" />
+                <Bell className="h-6 w-6" />
               </Link>
             </li>
             <li>
               <Link href="/">
-                <VscSettings className="h-6 w-6" />
+                <Settings2 className="h-6 w-6" />
               </Link>
             </li>
           </ul>
         </nav>
-        <div className="h-12 w-12 rounded-full bg-lightblue"></div>
+        <div className="bg-lightblue h-12 w-12 rounded-full"></div>
       </div>
     </header>
   );

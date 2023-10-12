@@ -1,11 +1,5 @@
-import SignInForm from "@/src/components/SignInForm";
-import Modal from "@/src/components/Modal";
+import SignInModal from "@/src/components/singin/SignInModal";
 
-export default function SignInModal() {
-  return (
-    <Modal>
-      Intercepted
-      <SignInForm />
-    </Modal>
-  );
+export default function SignInModalPage() {
+  return <SignInModal />;
 }
