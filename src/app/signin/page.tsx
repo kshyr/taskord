@@ -1,4 +1,4 @@
-import SignInForm from "@/src/components/singin/SignInForm";
+import SignInForm from "@/src/components/signin/SignInForm";
 
 type SignInPageProps = {
   searchParams?: Record<"callbackUrl" | "error", string>;

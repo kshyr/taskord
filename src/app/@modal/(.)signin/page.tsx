@@ -1,4 +1,4 @@
-import SignInModal from "@/src/components/singin/SignInModal";
+import SignInModal from "@/src/components/signin/SignInModal";
 
 export default function SignInModalPage() {
   return <SignInModal />;

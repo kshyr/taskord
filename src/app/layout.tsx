@@ -1,11 +1,51 @@
-import AuthProvider from "@/src/components/AuthProvider";
+import AuthProvider from "@/src/components/providers/AuthProvider";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ThemeProvider } from "@/src/components/ThemeProvider";
+import { ThemeProvider } from "@/src/components/providers/ThemeProvider";
 import { cn } from "@/src/utils/styles.utils";
+import localFont from "next/font/local";
 
 const inter = Inter({ subsets: ["latin"] });
+
+// const eUkraine = localFont({
+//   src: [
+//     {
+//       path: "./fonts/e-Ukraine-Thin.otf",
+//       weight: "100",
+//     },
+//     {
+//       path: "./fonts/e-Ukraine-UltraLight.otf",
+//       weight: "300",
+//     },
+//     {
+//       path: "./fonts/e-Ukraine-Light.otf",
+//       weight: "400",
+//     },
+//     {
+//       path: "./fonts/e-Ukraine-Regular.otf",
+//       weight: "500",
+//     },
+//     {
+//       path: "./fonts/e-Ukraine-Medium.otf",
+//       weight: "600",
+//     },
+//     {
+//       path: "./fonts/e-Ukraine-Bold.otf",
+//       weight: "700",
+//     },
+//   ],
+//   variable: "--font-e-ukraine",
+// });
+//
+// const eUkraineHead = localFont({
+//   src: [
+//     {
+//       path: "./fonts/e-UkraineHead-LOGO.otf",
+//     },
+//   ],
+//   variable: "--font-e-ukraine-head",
+// });
 
 export const metadata: Metadata = {
   title: "Create Next App",

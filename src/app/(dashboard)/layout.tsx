@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
+import Sidebar from "@/src/components/dashboard/Sidebar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,9 +15,9 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      Dashboard Layout
+    <div className="flex h-screen">
+      <Sidebar />
       {children}
-    </>
+    </div>
   );
 }
