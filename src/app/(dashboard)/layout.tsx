@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Sidebar from "@/src/components/dashboard/Sidebar";
+import Header from "@/src/components/dashboard/Header";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +18,10 @@ export default function DashboardLayout({
   return (
     <div className="flex h-screen">
       <Sidebar />
-      {children}
+      <div className="flex flex-1 flex-col p-6">
+        <Header />
+        {children}
+      </div>
     </div>
   );
 }

@@ -47,12 +47,12 @@ function Sidebar() {
       <div className="flex items-center justify-center">
         <Image
           src="/static/icons/logo.svg"
-          width={52}
-          height={52}
+          width={44}
+          height={44}
           alt="logo"
           draggable={false}
         />
-        <h1 className="hidden select-none font-head text-3xl sm:block">
+        <h1 className="hidden select-none font-head text-2xl sm:block">
           taskord
         </h1>
       </div>
@@ -60,10 +60,15 @@ function Sidebar() {
         {navItems.map((item, i) => (
           <Link href={item.path} key={i} passHref={true}>
             <Button
-              variant={item.path === pathname ? "default" : "ghost"}
+              variant={
+                item.path.slice(1) === pathname.slice(1).split("/")[0]
+                  ? "default"
+                  : "ghost"
+              }
               className={cn(
                 "w-full",
-                item.path === pathname || "text-muted-foreground",
+                item.path.slice(1) === pathname.slice(1).split("/")[0] ||
+                  "text-muted-foreground",
               )}
             >
               <div className="flex w-full items-center gap-3.5">
