@@ -3,12 +3,13 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/src/utils/styles.utils";
+import { decodeSlug } from "@/src/utils/general.utils.ts";
 
 export default function Breadcrumb() {
   const pathname = usePathname();
 
   return (
-    <div className="flex gap-2">
+    <div className="flex h-full gap-2">
       {pathname
         .slice(1)
         .split("/")
@@ -23,7 +24,7 @@ export default function Breadcrumb() {
                 "font-head text-xl capitalize tracking-wider",
               )}
             >
-              {path}
+              {decodeSlug(path)}
             </Link>
             {index === paths.length - 1 || (
               <span className="text-[22px] text-muted-foreground">/</span>

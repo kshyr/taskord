@@ -43,7 +43,7 @@ const navItems = [
 function Sidebar() {
   const pathname = usePathname();
   return (
-    <aside className="flex h-full flex-col border-r p-4">
+    <aside className="flex h-full flex-col border-r p-3 px-4">
       <Link href={"/"} className="flex items-center justify-center">
         <Image
           src="/static/icons/logo.svg"
