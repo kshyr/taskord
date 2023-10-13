@@ -18,7 +18,7 @@ export default function DashboardLayout({
   return (
     <div className="flex h-screen">
       <Sidebar />
-      <div className="flex flex-1 flex-col p-6">
+      <div className="flex flex-1 flex-col bg-neutral-900 px-6 py-5">
         <Header />
         {children}
       </div>

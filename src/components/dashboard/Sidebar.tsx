@@ -44,7 +44,7 @@ function Sidebar() {
   const pathname = usePathname();
   return (
     <aside className="flex h-full flex-col border-r p-4">
-      <div className="flex items-center justify-center">
+      <Link href={"/"} className="flex items-center justify-center">
         <Image
           src="/static/icons/logo.svg"
           width={44}
@@ -52,10 +52,8 @@ function Sidebar() {
           alt="logo"
           draggable={false}
         />
-        <h1 className="hidden select-none font-head text-2xl sm:block">
-          taskord
-        </h1>
-      </div>
+        <h1 className="select-none font-head text-2xl">taskord</h1>
+      </Link>
       <nav className="mt-8 flex flex-col gap-3">
         {navItems.map((item, i) => (
           <Link href={item.path} key={i} passHref={true}>

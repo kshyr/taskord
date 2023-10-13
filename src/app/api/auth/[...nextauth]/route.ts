@@ -107,7 +107,7 @@ export const authOptions: NextAuthOptions = {
   },
 
   pages: {
-    signIn: "/singin",
+    signIn: "/signin",
     signOut: "/signout",
   },
 };

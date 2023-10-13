@@ -56,8 +56,8 @@
         --card: 0 0% 3.9%;
         --card-foreground: 0 0% 98%;
 
-        --popover: 0 0% 3.9%;
-        --popover-foreground: 0 0% 98%;
+        --popover: 0 0% 10%;
+        --popover-foreground: 0 0% 94%;
 
         --primary: var(--violet);
         --primary-foreground: 0 0% 98%;
