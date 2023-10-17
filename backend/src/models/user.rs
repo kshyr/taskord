@@ -16,22 +16,18 @@ pub struct User {
 
 #[Object]
 impl User {
-    #[graphql(guard = JwtGuard)]
     async fn id(&self) -> ID {
         self.id
     }
 
-    #[graphql(guard = JwtGuard)]
     async fn username(&self) -> &str {
         &self.username
     }
 
-    #[graphql(guard = JwtGuard)]
     async fn email(&self) -> &str {
         &self.email
     }
 
-    #[graphql(guard = JwtGuard)]
     async fn created_at(&self) -> DateTime<Utc> {
         self.created_at
     }

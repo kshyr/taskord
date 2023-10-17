@@ -6,11 +6,12 @@ edition = "2021"
 [dependencies]
 axum = "0.6.20"
 tokio = { version = "1.32.0", features = ["full"] }
-sqlx = { version = "0.7.2", features = ["postgres", "runtime-tokio-rustls", "chrono", "macros"] }
+sqlx = { version = "0.7.2", features = ["postgres", "runtime-tokio-rustls", "chrono", "macros", "uuid"] }
 serde = { version = "1.0.130", features = ["derive"] }
-async-graphql = { version = "6.0.7", features = ["chrono"] }
+async-graphql = { version = "6.0.7", features = ["chrono", "uuid"] }
 async-graphql-axum = "6.0.7"
 chrono = "0.4.31"
 dotenv = "0.15.0"
-jsonwebtoken = "8.3.0"
+uuid = "1.4.1"
+jsonwebtoken = "9.0.0"
 bcrypt = "0.15.0"

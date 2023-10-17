@@ -1,3 +1,4 @@
+use crate::graphql::schema::AppSchema;
 use async_graphql::http::GraphiQLSource;
 use async_graphql_axum::{GraphQLRequest, GraphQLResponse};
 use axum::{
@@ -9,12 +10,11 @@ use axum::{
 };
 use dotenv::dotenv;
 use sqlx::PgPool;
-
-use crate::graphql::schema::AppSchema;
+use uuid::Uuid;
 mod graphql;
 mod models;
 
-type ID = i32;
+type ID = Uuid;
 type Token = String;
 
 async fn graphiql() -> impl IntoResponse {
