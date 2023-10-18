@@ -7,8 +7,11 @@ use sqlx::PgPool;
 use crate::graphql::guards::{
     generate_access_token, generate_refresh_token, JwtGuard, JwtRefreshGuard,
 };
+use crate::models::project::Project;
+use crate::models::tag::Tag;
 use crate::models::task::Task;
 use crate::models::user::{AccessToken, User, UserWithTokens};
+use crate::ID;
 
 pub struct MutationRoot;
 
@@ -87,10 +90,55 @@ impl MutationRoot {
     }
 
     #[graphql(guard = JwtGuard)]
+    async fn create_project(
+        &self,
+        ctx: &Context<'_>,
+        name: String,
+        description: Option<String>,
+        user_id: ID,
+    ) -> Result<Project> {
+        let pool: &PgPool = ctx.data()?;
+        let project = sqlx::query_as!(
+            Project,
+            r#"
+            INSERT INTO project (name, description, user_id)
+            VALUES ($1, $2, $3) RETURNING *
+            "#,
+            name,
+            description,
+            user_id
+        )
+        .fetch_one(pool)
+        .await?;
+
+        Ok(project)
+    }
+
+    #[graphql(guard = JwtGuard)]
+    async fn create_tag(&self, ctx: &Context<'_>, name: String, user_id: ID) -> Result<Tag> {
+        let pool: &PgPool = ctx.data()?;
+        let tag = sqlx::query_as!(
+            Tag,
+            r#"
+            INSERT INTO tag (name, user_id)
+            VALUES ($1, $2) RETURNING *
+            "#,
+            name,
+            user_id
+        )
+        .fetch_one(pool)
+        .await?;
+
+        Ok(tag)
+    }
+
+    #[graphql(guard = JwtGuard)]
     async fn create_task(
         &self,
         ctx: &Context<'_>,
         name: String,
+        project_id: Option<ID>,
+        user_id: ID,
         description: Option<String>,
         status: Option<i16>,
         priority: Option<i16>,
@@ -98,14 +146,19 @@ impl MutationRoot {
         let pool: &PgPool = ctx.data()?;
         let task = sqlx::query_as!(
             Task,
-            "INSERT INTO task (name, description, status, priority) VALUES ($1, $2, $3, $4) RETURNING *",
+            r#"
+            INSERT INTO task (project_id, user_id, name, description, status, priority)
+            VALUES ($1::UUID, $2, $3, $4, $5, $6) RETURNING *
+            "#,
+            project_id,
+            user_id,
             name,
             description,
             status.unwrap_or(0),
             priority.unwrap_or(0)
         )
-            .fetch_one(pool)
-            .await?;
+        .fetch_one(pool)
+        .await?;
 
         Ok(task)
     }

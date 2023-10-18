@@ -1,12 +1,13 @@
+use crate::graphql::guards::JwtGuard;
 use crate::ID;
 use async_graphql::Object;
 use chrono::{DateTime, Utc};
 
-use crate::graphql::guards::JwtGuard;
-
-#[derive(Debug, sqlx::FromRow)]
+#[derive(Debug, Clone, sqlx::FromRow)]
 pub struct Task {
     pub id: ID,
+    pub project_id: Option<ID>,
+    pub user_id: ID,
     pub name: String,
     pub description: Option<String>,
     pub status: i16,
@@ -20,6 +21,16 @@ impl Task {
     #[graphql(guard = JwtGuard)]
     async fn id(&self) -> ID {
         self.id
+    }
+
+    #[graphql(guard = JwtGuard)]
+    async fn project_id(&self) -> Option<ID> {
+        self.project_id
+    }
+
+    #[graphql(guard = JwtGuard)]
+    async fn user_id(&self) -> ID {
+        self.user_id
     }
 
     #[graphql(guard = JwtGuard)]

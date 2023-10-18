@@ -19,16 +19,40 @@ type MutationRoot {
   register(username: String!, email: String!, password: String!): User!
   authorize(username: String!, password: String!): UserWithTokens!
   refreshToken: AccessToken!
-  createTask(name: String!, description: String, status: Int, priority: Int): Task!
+  createProject(name: String!, description: String, userId: UUID!): Project!
+  createTag(name: String!, userId: UUID!): Tag!
+  createTask(name: String!, projectId: UUID, userId: UUID!, description: String, status: Int, priority: Int): Task!
+}
+
+type Project {
+  id: UUID!
+  name: String!
+  description: String!
+  user: User!
+  tags: [Tag!]!
+  tasks: [Task!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type QueryRoot {
-  taskById(id: Int!): Task
-  allTasks: [Task!]!
+  projects(userId: UUID!): [Project!]!
+  tags(userId: UUID!): [Tag!]!
+  tasks(userId: UUID!): Task
+}
+
+type Tag {
+  id: UUID!
+  user: User!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Task {
-  id: Int!
+  id: UUID!
+  projectId: UUID
+  userId: UUID!
   name: String!
   description: String
   status: Int!
@@ -38,7 +62,7 @@ type Task {
 }
 
 type User {
-  id: Int!
+  id: UUID!
   username: String!
   email: String!
   createdAt: DateTime!
@@ -46,7 +70,7 @@ type User {
 }
 
 type UserWithTokens {
-  id: Int!
+  id: UUID!
   username: String!
   email: String!
   createdAt: DateTime!
@@ -54,4 +78,16 @@ type UserWithTokens {
   accessToken: AccessToken!
   refreshToken: String!
 }
+
+"""
+A UUID is a unique 128-bit number, stored as 16 octets. UUIDs are parsed as
+Strings within GraphQL. UUIDs are used to assign unique identifiers to
+entities without requiring a central allocating authority.
+
+# References
+
+* [Wikipedia: Universally Unique Identifier](http://en.wikipedia.org/wiki/Universally_unique_identifier)
+* [RFC4122: A Universally Unique IDentifier (UUID) URN Namespace](http://tools.ietf.org/html/rfc4122)
+"""
+scalar UUID
 
