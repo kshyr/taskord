@@ -1,39 +1,20 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { gql, GraphQLClient } from "graphql-request";
-import { apiUrl, getPublicQueryClient } from "@/src/graphql/client";
+import {
+  refreshToken as refreshTokenMutation,
+  authorize,
+} from "@/src/graphql/mutations";
 import { JWT } from "next-auth/jwt";
 
 async function refreshToken(token: JWT): Promise<JWT> {
-  const graphQLClient = new GraphQLClient(apiUrl, {
-    headers: {
-      authorization: "Refresh " + token.accessToken.token,
-    },
-  });
-
-  let res: any;
-
+  let res;
   try {
-    res = await graphQLClient.request(
-      gql`
-        mutation refreshToken {
-          refreshToken {
-            token
-            expiresIn
-          }
-        }
-      `,
-      { refreshToken: token.refreshToken },
-    );
+    res = await refreshTokenMutation(token);
   } catch (e) {
+    console.error(e);
     return token;
   }
-
-  if (res.errors) {
-    return token;
-  } else {
-    return res.refreshToken;
-  }
+  return res;
 }
 
 export const authOptions: NextAuthOptions = {
@@ -52,38 +33,14 @@ export const authOptions: NextAuthOptions = {
 
         const { username, password } = credentials;
 
-        let res: any;
-        const graphQLClient = getPublicQueryClient();
-
+        let res;
         try {
-          res = await graphQLClient.request(
-            gql`
-              mutation login($username: String!, $password: String!) {
-                authorize(username: $username, password: $password) {
-                  id
-                  username
-                  email
-                  createdAt
-                  updatedAt
-                  accessToken {
-                    token
-                    expiresIn
-                  }
-                  refreshToken
-                }
-              }
-            `,
-            { username, password },
-          );
+          res = await authorize(username, password);
         } catch (e) {
+          console.error(e);
           return null;
         }
-
-        if (res.errors) {
-          return null;
-        } else {
-          return res.authorize;
-        }
+        return res;
       },
     }),
   ],

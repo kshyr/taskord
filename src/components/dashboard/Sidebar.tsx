@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/src/utils/styles.utils";
+import { useState } from "react";
 
 const navItems = [
   {
@@ -42,6 +43,9 @@ const navItems = [
 
 function Sidebar() {
   const pathname = usePathname();
+  const [targetNavPath, setTargetNavPath] = useState(pathname);
+  const navPath = pathname.slice(1).split("/")[0];
+
   return (
     <aside className="flex h-full flex-col border-r p-3 px-4">
       <Link href={"/"} className="flex items-center justify-center">
@@ -55,29 +59,31 @@ function Sidebar() {
         <h1 className="select-none font-head text-2xl">taskord</h1>
       </Link>
       <nav className="mt-8 flex flex-col gap-3">
-        {navItems.map((item, i) => (
-          <Link href={item.path} key={i} passHref={true}>
-            <Button
-              variant={
-                item.path.slice(1) === pathname.slice(1).split("/")[0]
-                  ? "default"
-                  : "ghost"
-              }
-              className={cn(
-                "w-full",
-                item.path.slice(1) === pathname.slice(1).split("/")[0] ||
-                  "text-muted-foreground",
-              )}
-            >
-              <div className="flex w-full items-center gap-3.5">
-                {item.icon}
-                <span className="text-[15px] font-semibold tracking-wide">
-                  {item.name}
-                </span>
-              </div>
-            </Button>
-          </Link>
-        ))}
+        {navItems.map((item, i) => {
+          const isActive = item.path.slice(1) === navPath;
+          const isLoading = item.path.slice(1) === targetNavPath && !isActive;
+
+          return (
+            <Link href={item.path} key={i} passHref={true}>
+              <Button
+                variant={isActive ? "default" : "ghost"}
+                className={cn(
+                  "w-full",
+                  isActive || "text-muted-foreground",
+                  isLoading && "animate-pulse",
+                )}
+                onClick={() => setTargetNavPath(item.path.slice(1))}
+              >
+                <div className="flex w-full items-center gap-3.5">
+                  {item.icon}
+                  <span className="text-[15px] font-semibold tracking-wide">
+                    {item.name}
+                  </span>
+                </div>
+              </Button>
+            </Link>
+          );
+        })}
       </nav>
     </aside>
   );

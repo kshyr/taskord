@@ -3,28 +3,44 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/src/components/ui/card";
+import { Badge } from "@/src/components/ui/badge";
+import { encodeSlug } from "@/src/utils/general.utils.ts";
+import Link from "next/link";
+import { ReactNode } from "react";
+
+function ProjectLink({
+  project,
+  children,
+}: {
+  project: Project;
+  children: ReactNode;
+}) {
+  return (
+    <Link href={`/projects/${encodeSlug(project.name)}`} key={project.id}>
+      {children}
+    </Link>
+  );
+}
 
 export default function ProjectCard({ project }: { project: Project }) {
   return (
-    <Card className="flex-1">
+    <Card className="flex flex-1 flex-col justify-between">
       <CardHeader>
-        <CardTitle>{project.name}</CardTitle>
+        <ProjectLink project={project}>
+          <CardTitle>{project.name}</CardTitle>
+        </ProjectLink>
         <CardDescription>{project.description}</CardDescription>
-        <div className="mt-2 flex w-full flex-wrap justify-end">
-          <span className="text-gray-700 mr-auto text-sm">
+        <div className="mt-2 flex w-full flex-wrap justify-end gap-2">
+          <span className="text-gray-700 mr-auto text-sm font-medium">
             {project.category}
           </span>
           {project.tags.map((tag) => (
-            <span
-              key={tag}
-              className="text-gray-700 bg-gray-100 mb-2 mr-2 rounded-full px-2 py-1 text-xs font-semibold"
-            >
+            <Badge key={tag} variant="outline">
               {tag}
-            </span>
+            </Badge>
           ))}
         </div>
       </CardHeader>
