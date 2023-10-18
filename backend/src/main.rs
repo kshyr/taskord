@@ -10,7 +10,9 @@ use axum::{
 };
 use dotenv::dotenv;
 use sqlx::PgPool;
+use tower_http::cors::CorsLayer;
 use uuid::Uuid;
+
 mod graphql;
 mod models;
 
@@ -51,6 +53,7 @@ async fn main() {
     let app = Router::new()
         .route("/", post(graphql_handler))
         .route("/graphiql", get(graphiql))
+        .layer(CorsLayer::permissive())
         .with_state(schema);
 
     let addr = "[::]:8080".parse().unwrap();
