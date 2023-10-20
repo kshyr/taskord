@@ -1,7 +1,8 @@
-import { getPublicQueryClient } from "@/src/graphql/client.ts";
+import { getPublicQueryClient, getQueryClient } from "@/src/graphql/client.ts";
 import { gql } from "graphql-request";
 import { JWT } from "next-auth/jwt";
 import { User } from "next-auth";
+import { getUserId } from "@/src/utils/auth.utils.ts";
 
 /* Auth Mutations */
 
@@ -93,6 +94,40 @@ export async function refreshToken(token: JWT): Promise<JWT> {
 
   return {
     ...token,
-    ...res.refreshToken,
+    accessToken: {
+      token: res.refreshToken.token,
+      expiresIn: res.refreshToken.expiresIn,
+    },
   };
+}
+
+/* Project Mutations */
+
+type CreateProjectMutation = {
+  createProject: {
+    name: string;
+    description: string;
+  };
+};
+
+export async function createProject(name: string, description: string) {
+  const client = await getQueryClient();
+  const userId = await getUserId();
+  const res: CreateProjectMutation = await client.request(
+    gql`
+      mutation createProject($name: String!, $description: String!) {
+        createProject(name: $name, description: $description, userId: $userId) {
+          name
+          description
+        }
+      }
+    `,
+    {
+      name,
+      description,
+      userId,
+    },
+  );
+
+  return res.createProject;
 }

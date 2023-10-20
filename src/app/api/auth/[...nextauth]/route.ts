@@ -51,7 +51,7 @@ export const authOptions: NextAuthOptions = {
         return { ...user, ...token };
       }
 
-      if (new Date() < token.accessToken.expiresIn) {
+      if (new Date() < new Date(token.accessToken.expiresIn)) {
         return token;
       }
 
