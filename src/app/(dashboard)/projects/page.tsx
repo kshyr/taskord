@@ -25,7 +25,7 @@ export default async function ProjectsPage() {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-3">
       <div className="flex">
         <span className="text-muted-foreground">
           {projects.length} {pluralize(projects.length, "project")}
