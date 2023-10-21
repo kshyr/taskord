@@ -53,4 +53,25 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
-export { Button, buttonVariants };
+const ButtonWithIcon = React.forwardRef<
+  HTMLButtonElement,
+  ButtonProps & { icon: React.ReactNode; gap?: number }
+>(({ icon, children, ...props }, ref) => {
+  return (
+    <Button
+      ref={ref}
+      {...props}
+      className={cn(
+        "flex pl-2.5",
+        props.gap && `gap-${props?.gap}`,
+        props.className,
+      )}
+    >
+      <div>{icon}</div>
+      <span>{children}</span>
+    </Button>
+  );
+});
+ButtonWithIcon.displayName = "ButtonWithIcon";
+
+export { Button, buttonVariants, ButtonWithIcon };

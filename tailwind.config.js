@@ -1,3 +1,5 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -66,8 +68,8 @@ module.exports = {
         darkred: "#843B3B",
       },
       fontFamily: {
-        sans: ["e-Ukraine", "sans-serif"],
-        head: ["e-Ukraine Head", "sans-serif"],
+        sans: ["var(--font-e-ukraine)", ...defaultTheme.fontFamily.sans],
+        head: ["var(--font-e-ukraine-head)", ...defaultTheme.fontFamily.sans],
       },
       borderRadius: {
         lg: "var(--radius)",

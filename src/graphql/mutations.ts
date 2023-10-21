@@ -115,7 +115,11 @@ export async function createProject(name: string, description: string) {
   const userId = await getUserId();
   const res: CreateProjectMutation = await client.request(
     gql`
-      mutation createProject($name: String!, $description: String!) {
+      mutation createProject(
+        $name: String!
+        $description: String!
+        $userId: UUID!
+      ) {
         createProject(name: $name, description: $description, userId: $userId) {
           name
           description

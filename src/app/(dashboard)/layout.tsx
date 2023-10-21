@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Sidebar from "@/src/components/dashboard/Sidebar";
 import Header from "@/src/components/dashboard/Header";
+import Link from "next/link";
+import Image from "next/image";
+import logoPng from "@/public/static/icons/logo.png";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +20,13 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="flex h-screen">
-      <Sidebar />
+      <aside className="flex h-full w-52 flex-col gap-4 border-r p-3 px-4">
+        <Link href={"/"} className="flex items-center justify-center">
+          <Image src={logoPng} width={48} height={48} alt="logo" />
+          <h1 className="select-none font-head text-2xl">taskord</h1>
+        </Link>
+        <Sidebar />
+      </aside>
       <div className="flex flex-1 flex-col gap-4 overflow-y-auto bg-[#141414] px-6 py-5">
         <Header />
         {children}

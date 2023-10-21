@@ -37,7 +37,7 @@ export default function ProjectCard({ project }: { project: Project }) {
           <span className="text-gray-700 mr-auto text-sm font-medium">
             {project.category}
           </span>
-          {project.tags.map((tag) => (
+          {project.tags?.map((tag) => (
             <Badge key={tag} variant="outline">
               {tag}
             </Badge>
@@ -47,7 +47,7 @@ export default function ProjectCard({ project }: { project: Project }) {
       <CardContent>
         <div className="flex flex-col gap-2">
           {project.tasks
-            .sort(
+            ?.sort(
               (a, b) =>
                 new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime(),
             )

@@ -1,19 +1,6 @@
 import { GraphQLClient } from "graphql-request";
 import { getUserSession } from "@/src/utils/auth.utils";
 
-// export const queryClient = new GraphQLClient(process.env.API_URL as string, {
-// 	fetch: cache(async (url: RequestInfo | URL, params?: RequestInit) => {
-// 		const JWT = cookies().get("Authorization");
-// 		return fetch(url, {
-// 				...params,
-// 			headers: {
-// 					authorization: "Bearer " + JWT,
-// 				}, next: {revalidate: 600}
-// 			}
-// 		)
-// 	})
-// });
-
 // if dev, use dev endpoint, else use prod endpoint
 export const apiUrl =
   process.env.NODE_ENV === "development"
@@ -27,9 +14,22 @@ export function getPublicQueryClient() {
 export async function getQueryClient() {
   const session = await getUserSession();
 
+  if (!session) {
+    throw new Error("No session found");
+  }
+
   return new GraphQLClient(apiUrl, {
+    fetch,
     headers: {
-      authorization: "Bearer " + session?.user?.accessToken.token,
+      Authorization: "Bearer " + session.user.accessToken.token,
     },
   });
 }
+
+type MemoOpts = {
+  log?: ("dedupe" | "datacache" | "verbose")[];
+};
+
+export const DEFAULT_MEMO_OPTS: MemoOpts = {
+  log: ["verbose", "datacache"],
+};
