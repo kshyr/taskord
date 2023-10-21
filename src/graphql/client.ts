@@ -3,7 +3,7 @@ import { getUserSession } from "@/src/utils/auth.utils";
 
 // if dev, use dev endpoint, else use prod endpoint
 export const apiUrl =
-  process.env.NODE_ENV === "development"
+  process.env.VERCEL_ENV === "development"
     ? (process.env.NEXT_PUBLIC_DEV_API_URL as string)
     : (process.env.NEXT_PUBLIC_API_URL as string);
 
