@@ -6,9 +6,12 @@ import {
 } from "@/src/graphql/mutations.ts";
 import { pluralize } from "@/src/utils/general.utils.ts";
 import CreateProjectModal from "@/src/components/projects/CreateProjectModal.tsx";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { getUserSession } from "@/src/utils/auth.utils.ts";
 
 export default async function ProjectsPage() {
+  await getUserSession();
+
   const projects = await getProjectPreviews();
 
   async function createProject(formData: FormData) {

@@ -6,8 +6,11 @@ import {
 } from "@/src/graphql/mutations.ts";
 import { revalidatePath, revalidateTag } from "next/cache";
 import CreateTaskModal from "@/src/components/tasks/CreateTaskModal.tsx";
+import { getUserSession } from "@/src/utils/auth.utils.ts";
 
 export default async function TasksPage() {
+  await getUserSession();
+
   const tasks = await getAllTasks();
   const projects = await getProjectPreviews();
 
