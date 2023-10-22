@@ -4,7 +4,7 @@ import {
   createTask as createTaskMutation,
   deleteTask as deleteTaskMutation,
 } from "@/src/graphql/mutations.ts";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 import CreateTaskModal from "@/src/components/tasks/CreateTaskModal.tsx";
 import { getUserSession } from "@/src/utils/auth.utils.ts";
 

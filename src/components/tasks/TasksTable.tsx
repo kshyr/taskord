@@ -7,7 +7,7 @@ import {
   TableHead,
 } from "@/src/components/ui/table.tsx";
 import type { Task } from "@/src/types/types.ts";
-import DeleteTaskButton from "@/src/components/tasks/DeleteTaskButton.tsx";
+import DeleteAction from "@/src/components/general/DeleteAction.tsx";
 
 type TaskTableProps = {
   tasks: Task[];
@@ -24,6 +24,7 @@ export default function TasksTable({ tasks, deleteTask }: TaskTableProps) {
           <TableHead>Due Date</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Priority</TableHead>
+          <TableHead></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -44,18 +45,11 @@ export default function TasksTable({ tasks, deleteTask }: TaskTableProps) {
               <TableCell>{task.status}</TableCell>
               <TableCell>{task.priority}</TableCell>
               <TableCell>
-                <DeleteTaskButton taskId={task.id} deleteTask={deleteTask} />
+                <DeleteAction itemId={task.id} deleteMutation={deleteTask} />
               </TableCell>
             </TableRow>
           );
         })}
-        <TableRow>
-          <TableCell>Task 1</TableCell>
-          <TableCell>Project 1</TableCell>
-          <TableCell>2021-10-10</TableCell>
-          <TableCell>Done</TableCell>
-          <TableCell>High</TableCell>
-        </TableRow>
       </TableBody>
     </Table>
   );

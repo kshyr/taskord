@@ -7,15 +7,11 @@ import {
   CardTitle,
 } from "@/src/components/ui/card";
 import { Badge } from "@/src/components/ui/badge";
-import { encodeSlug } from "@/src/utils/general.utils.ts";
 import Link from "next/link";
 import { ReactNode } from "react";
-import { Button } from "@/src/components/ui/button.tsx";
-import DeleteProjectButton from "@/src/components/projects/DeleteProjectButton.tsx";
 
 type ProjectCardProps = {
   project: Project;
-  deleteProject: (id: string) => void;
 };
 
 type ProjectLinkProps = {
@@ -25,26 +21,19 @@ type ProjectLinkProps = {
 
 function ProjectLink({ project, children }: ProjectLinkProps) {
   return (
-    <Link href={`/projects/${encodeSlug(project.name)}`} key={project.id}>
+    <Link href={`/projects/${project.id}`} key={project.id}>
       {children}
     </Link>
   );
 }
 
-export default function ProjectCard({
-  project,
-  deleteProject,
-}: ProjectCardProps) {
+export default function ProjectCard({ project }: ProjectCardProps) {
   return (
     <Card className="flex flex-1 flex-col justify-between">
       <CardHeader>
         <ProjectLink project={project}>
           <CardTitle>{project.name}</CardTitle>
         </ProjectLink>
-        <DeleteProjectButton
-          projectId={project.id}
-          deleteProject={deleteProject}
-        />
         <CardDescription>{project.description}</CardDescription>
         <div className="mt-2 flex w-full flex-wrap justify-end gap-2">
           {project.tags?.map((tag) => (
@@ -54,7 +43,7 @@ export default function ProjectCard({
           ))}
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-grow">
         <div className="flex flex-col gap-2">
           {project.tasks
             ?.sort((a, b) => {

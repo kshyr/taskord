@@ -3,10 +3,13 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/src/utils/styles.utils";
-import { decodeSlug } from "@/src/utils/general.utils.ts";
 import { Fragment } from "react";
 
-export default function Breadcrumb() {
+type BreadcumbProps = {
+  projectNameIds?: { id: string; name: string }[];
+};
+
+export default function Breadcrumb({ projectNameIds }: BreadcumbProps) {
   const pathname = usePathname();
 
   return (
@@ -22,10 +25,11 @@ export default function Breadcrumb() {
                 index === paths.length - 1
                   ? "cursor-default"
                   : "text-muted-foreground",
-                "font-head text-xl capitalize tracking-wider",
+                index === 0 && "capitalize",
+                "font-head text-2xl tracking-wider",
               )}
             >
-              {decodeSlug(path)}
+              {projectNameIds?.find((p) => p.id === path)?.name || path}
             </Link>
             {index === paths.length - 1 || (
               <span className="select-none text-[22px] text-muted-foreground">

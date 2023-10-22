@@ -20,7 +20,7 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="flex h-screen">
-      <aside className="flex h-full w-52 flex-col gap-4 border-r p-3 px-4">
+      <aside className="flex h-full w-52 flex-col gap-6 border-r px-4 py-6">
         <Link href={"/"} className="flex items-center justify-center">
           <Image src={logoPng} width={48} height={48} alt="logo" />
           <h1 className="select-none font-head text-2xl">taskord</h1>

@@ -147,7 +147,6 @@ export async function createProject({
 
 export async function deleteProject(id: string) {
   const client = await getQueryClient();
-  const userId = await getUserId();
   await client.request(
     gql`
       mutation deleteProject($id: UUID!) {
@@ -231,7 +230,6 @@ export const createTask = async ({
 
 export const deleteTask = async (id: string) => {
   const client = await getQueryClient();
-  const userId = await getUserId();
   await client.request(
     gql`
       mutation deleteTask($id: UUID!) {

@@ -27,6 +27,7 @@ export const getProjectPreviews = memoize(
             tasks {
               id
               name
+              dueDate
               status
               priority
             }
@@ -44,23 +45,69 @@ export const getProjectPreviews = memoize(
   },
 );
 
-export const getProjectNameById = async (id: string) => {
-  const client = await getQueryClient();
-  const userId = await getUserId();
+export const getProjectNames = memoize(
+  async (): Promise<{ id: string; name: string }[]> => {
+    const client = await getQueryClient();
+    const userId = await getUserId();
 
-  const res: ProjectPreviewQuery = await client.request(
-    gql`
-      query project($id: UUID!) {
-        projects(userId: $id) {
-          name
+    const res: ProjectPreviewQuery = await client.request(
+      gql`
+        query projects($userId: UUID!) {
+          projects(userId: $userId) {
+            id
+            name
+          }
         }
-      }
-    `,
-    { userId },
-  );
+      `,
+      { userId },
+    );
 
-  return res.projects[0].name;
-};
+    return res.projects;
+  },
+  {
+    ...DEFAULT_MEMO_OPTS,
+    revalidateTags: ["projects"],
+  },
+);
+
+export const getProjectById = memoize(
+  async (id: string): Promise<Project> => {
+    const client = await getQueryClient();
+
+    const res: { projectById: Project } = await client.request(
+      gql`
+        query project($id: UUID!) {
+          projectById(id: $id) {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+            tags {
+              id
+              name
+            }
+            tasks {
+              id
+              name
+              description
+              status
+              priority
+              dueDate
+            }
+          }
+        }
+      `,
+      { id },
+    );
+
+    return res.projectById;
+  },
+  {
+    ...DEFAULT_MEMO_OPTS,
+    revalidateTags: (id) => ["projects", id],
+  },
+);
 
 /* Task Queries */
 

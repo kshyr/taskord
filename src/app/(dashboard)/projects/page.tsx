@@ -1,12 +1,9 @@
 import ProjectCard from "@/src/components/projects/ProjectCard.tsx";
 import { getProjectPreviews } from "@/src/graphql/queries.ts";
-import {
-  createProject as createProjectMutation,
-  deleteProject as deleteProjectMutation,
-} from "@/src/graphql/mutations.ts";
+import { createProject as createProjectMutation } from "@/src/graphql/mutations.ts";
 import { pluralize } from "@/src/utils/general.utils.ts";
 import CreateProjectModal from "@/src/components/projects/CreateProjectModal.tsx";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { getUserSession } from "@/src/utils/auth.utils.ts";
 
 export default async function ProjectsPage() {
@@ -25,14 +22,6 @@ export default async function ProjectsPage() {
     revalidateTag("projects");
   }
 
-  async function deleteProject(id: string) {
-    "use server";
-
-    await deleteProjectMutation(id);
-
-    revalidateTag("projects");
-  }
-
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center">
@@ -43,11 +32,7 @@ export default async function ProjectsPage() {
       </div>
       <div className="flex w-full flex-wrap gap-3">
         {projects.map((project) => (
-          <ProjectCard
-            project={project}
-            deleteProject={deleteProject}
-            key={`project-${project.id}`}
-          />
+          <ProjectCard project={project} key={`project-${project.id}`} />
         ))}
       </div>
     </div>

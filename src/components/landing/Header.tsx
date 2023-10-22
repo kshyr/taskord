@@ -23,12 +23,13 @@ export default async function LandingHeader() {
       <div className="flex items-center gap-8">
         {/* <nav></nav> */}
 
-        {!session && (
+        {session ? (
+          <ProfileDropdown />
+        ) : (
           <Link href={"/signin"}>
             <Button>Sign In</Button>
           </Link>
         )}
-        <ProfileDropdown />
       </div>
     </header>
   );

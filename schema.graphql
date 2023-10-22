@@ -42,6 +42,7 @@ type Project {
 
 type QueryRoot {
   projects(userId: UUID!): [Project!]!
+  projectById(id: UUID!): Project!
   tags(userId: UUID!): [Tag!]!
   tasks(userId: UUID!): [Task!]!
 }

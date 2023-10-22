@@ -23,6 +23,16 @@ impl QueryRoot {
     }
 
     #[graphql(guard = JwtGuard)]
+    async fn project_by_id(&self, ctx: &Context<'_>, id: ID) -> Result<Project, Error> {
+        let pool: &PgPool = ctx.data().unwrap();
+        let project = sqlx::query_as!(Project, "SELECT * FROM project WHERE id = $1", id)
+            .fetch_one(pool)
+            .await?;
+
+        Ok(project)
+    }
+
+    #[graphql(guard = JwtGuard)]
     async fn tags(&self, ctx: &Context<'_>, user_id: ID) -> Result<Vec<Tag>, Error> {
         let pool: &PgPool = ctx.data().unwrap();
         let tags = sqlx::query_as!(Tag, "SELECT * FROM tag WHERE user_id = $1", user_id)
