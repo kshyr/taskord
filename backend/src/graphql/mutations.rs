@@ -23,6 +23,7 @@ struct Claims {
 
 #[Object]
 impl MutationRoot {
+    /* Auth */
     async fn register(
         &self,
         ctx: &Context<'_>,
@@ -89,6 +90,8 @@ impl MutationRoot {
         Ok(access_token)
     }
 
+    /* Project */
+
     #[graphql(guard = JwtGuard)]
     async fn create_project(
         &self,
@@ -115,6 +118,149 @@ impl MutationRoot {
     }
 
     #[graphql(guard = JwtGuard)]
+    async fn update_project(
+        &self,
+        ctx: &Context<'_>,
+        id: ID,
+        name: Option<String>,
+        description: Option<String>,
+        task_ids: Option<Vec<ID>>,
+        tag_ids: Option<Vec<ID>>,
+    ) -> Result<Project> {
+        let pool: &PgPool = ctx.data()?;
+        let existing_project: Project = sqlx::query_as!(
+            Project,
+            r#"
+            SELECT * FROM project WHERE id = $1
+            "#,
+            id
+        )
+        .fetch_one(pool)
+        .await?;
+
+        let existing_tasks: Vec<Task> = sqlx::query_as!(
+            Task,
+            r#"
+            SELECT * FROM task WHERE project_id = $1
+            "#,
+            id
+        )
+        .fetch_all(pool)
+        .await?;
+
+        let existing_task_ids: Vec<ID> = existing_tasks.iter().map(|task| task.id).collect();
+
+        let existing_tags: Vec<Tag> = sqlx::query_as!(
+            Tag,
+            r#"
+            SELECT t.*
+            FROM tag t
+            JOIN project_tag pt ON t.id = pt.tag_id
+            WHERE pt.project_id = $1
+            "#,
+            id
+        )
+        .fetch_all(pool)
+        .await?;
+
+        let existing_tag_ids: Vec<ID> = existing_tags.iter().map(|tag| tag.id).collect();
+
+        if let Some(task_ids) = task_ids {
+            for task_id in task_ids {
+                if !existing_task_ids.contains(&task_id) {
+                    sqlx::query!(
+                        r#"
+                        UPDATE task
+                        SET project_id = $1
+                        WHERE id = $2
+                        "#,
+                        id,
+                        task_id
+                    )
+                    .execute(pool)
+                    .await?;
+                } else {
+                    sqlx::query!(
+                        r#"
+                        UPDATE task
+                        SET project_id = NULL
+                        WHERE id = $1
+                        "#,
+                        task_id
+                    )
+                    .execute(pool)
+                    .await?;
+                }
+            }
+        }
+
+        if let Some(tag_ids) = tag_ids {
+            for tag_id in tag_ids {
+                if !existing_tag_ids.contains(&tag_id) {
+                    sqlx::query!(
+                        r#"
+                        INSERT INTO project_tag (project_id, tag_id)
+                        VALUES ($1, $2)
+                        "#,
+                        id,
+                        tag_id
+                    )
+                    .execute(pool)
+                    .await?;
+                } else {
+                    sqlx::query!(
+                        r#"
+                        DELETE FROM project_tag
+                        WHERE project_id = $1 AND tag_id = $2
+                        "#,
+                        id,
+                        tag_id
+                    )
+                    .execute(pool)
+                    .await?;
+                }
+            }
+        }
+
+        let updated_project = sqlx::query_as!(
+            Project,
+            r#"
+            UPDATE project
+            SET name = $1, description = $2
+            WHERE id = $3
+            RETURNING *
+            "#,
+            name.unwrap_or(existing_project.name),
+            description.unwrap_or(existing_project.description),
+            id
+        )
+        .fetch_one(pool)
+        .await?;
+
+        Ok(updated_project)
+    }
+
+    #[graphql(guard = JwtGuard)]
+    async fn delete_project(&self, ctx: &Context<'_>, id: ID) -> Result<Project> {
+        let pool: &PgPool = ctx.data()?;
+        let project: Project = sqlx::query_as!(
+            Project,
+            r#"
+            DELETE FROM project
+            WHERE id = $1
+            RETURNING *
+            "#,
+            id
+        )
+        .fetch_one(pool)
+        .await?;
+
+        Ok(project)
+    }
+
+    /* Tag */
+
+    #[graphql(guard = JwtGuard)]
     async fn create_tag(&self, ctx: &Context<'_>, name: String, user_id: ID) -> Result<Tag> {
         let pool: &PgPool = ctx.data()?;
         let tag = sqlx::query_as!(
@@ -131,6 +277,38 @@ impl MutationRoot {
 
         Ok(tag)
     }
+
+    #[graphql(guard = JwtGuard)]
+    async fn update_tag(&self, ctx: &Context<'_>, id: ID, name: Option<String>) -> Result<Tag> {
+        let pool: &PgPool = ctx.data()?;
+        let existing_tag: Tag = sqlx::query_as!(
+            Tag,
+            r#"
+            SELECT * FROM tag WHERE id = $1
+            "#,
+            id
+        )
+        .fetch_one(pool)
+        .await?;
+
+        let updated_tag = sqlx::query_as!(
+            Tag,
+            r#"
+            UPDATE tag
+            SET name = $1
+            WHERE id = $2
+            RETURNING *
+            "#,
+            name.unwrap_or(existing_tag.name),
+            id
+        )
+        .fetch_one(pool)
+        .await?;
+
+        Ok(updated_tag)
+    }
+
+    /* Task */
 
     #[graphql(guard = JwtGuard)]
     async fn create_task(
@@ -161,5 +339,48 @@ impl MutationRoot {
         .await?;
 
         Ok(task)
+    }
+
+    #[graphql(guard = JwtGuard)]
+    async fn update_task(
+        &self,
+        ctx: &Context<'_>,
+        id: ID,
+        name: Option<String>,
+        project_id: Option<ID>,
+        description: Option<String>,
+        status: Option<i16>,
+        priority: Option<i16>,
+    ) -> Result<Task> {
+        let pool: &PgPool = ctx.data()?;
+        let existing_task: Task = sqlx::query_as!(
+            Task,
+            r#"
+            SELECT * FROM task WHERE id = $1
+            "#,
+            id
+        )
+        .fetch_one(pool)
+        .await?;
+
+        let updated_task = sqlx::query_as!(
+            Task,
+            r#"
+            UPDATE task
+            SET name = $1, project_id = $2, description = $3, status = $4, priority = $5
+            WHERE id = $6
+            RETURNING *
+            "#,
+            name.unwrap_or(existing_task.name),
+            project_id,
+            description,
+            status.unwrap_or(existing_task.status),
+            priority.unwrap_or(existing_task.priority),
+            id
+        )
+        .fetch_one(pool)
+        .await?;
+
+        Ok(updated_task)
     }
 }

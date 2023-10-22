@@ -11,9 +11,10 @@ pub struct QueryRoot;
 
 #[Object]
 impl QueryRoot {
+    #[graphql(guard = JwtGuard)]
     async fn projects(&self, ctx: &Context<'_>, user_id: ID) -> Result<Vec<Project>, Error> {
         let pool: &PgPool = ctx.data().unwrap();
-        let projects: Vec<Project> =
+        let projects =
             sqlx::query_as!(Project, "SELECT * FROM project WHERE user_id = $1", user_id)
                 .fetch_all(pool)
                 .await?;
@@ -21,21 +22,22 @@ impl QueryRoot {
         Ok(projects.into())
     }
 
+    #[graphql(guard = JwtGuard)]
     async fn tags(&self, ctx: &Context<'_>, user_id: ID) -> Result<Vec<Tag>, Error> {
         let pool: &PgPool = ctx.data().unwrap();
-        let tasks: Vec<Tag> = sqlx::query_as!(Tag, "SELECT * FROM tag WHERE user_id = $1", user_id)
+        let tags = sqlx::query_as!(Tag, "SELECT * FROM tag WHERE user_id = $1", user_id)
             .fetch_all(pool)
             .await?;
 
-        Ok(tasks.into())
+        Ok(tags)
     }
 
     #[graphql(guard = JwtGuard)]
-    async fn tasks(&self, ctx: &Context<'_>, user_id: ID) -> Result<Option<Task>, Error> {
+    async fn tasks(&self, ctx: &Context<'_>, user_id: ID) -> Result<Vec<Task>, Error> {
         let pool: &PgPool = ctx.data().unwrap();
-        let task = sqlx::query_as!(Task, "SELECT * FROM task WHERE user_id = $1", user_id)
-            .fetch_optional(pool)
+        let tasks = sqlx::query_as!(Task, "SELECT * FROM task WHERE user_id = $1", user_id)
+            .fetch_all(pool)
             .await?;
-        Ok(task)
+        Ok(tasks)
     }
 }
