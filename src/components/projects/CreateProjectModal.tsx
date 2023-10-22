@@ -21,10 +21,9 @@ export default function CreateProjectModal({
     <Dialog>
       <DialogTrigger asChild>
         <ButtonWithIcon
-          gap={1}
           icon={<Plus size={20} />}
           variant="secondary"
-          className="ml-auto"
+          className="ml-auto gap-1"
         >
           New Project
         </ButtonWithIcon>

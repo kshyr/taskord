@@ -386,4 +386,22 @@ impl MutationRoot {
 
         Ok(updated_task)
     }
+
+    #[graphql(guard = JwtGuard)]
+    async fn delete_task(&self, ctx: &Context<'_>, id: ID) -> Result<Task> {
+        let pool: &PgPool = ctx.data()?;
+        let task: Task = sqlx::query_as!(
+            Task,
+            r#"
+            DELETE FROM task
+            WHERE id = $1
+            RETURNING *
+            "#,
+            id
+        )
+        .fetch_one(pool)
+        .await?;
+
+        Ok(task)
+    }
 }

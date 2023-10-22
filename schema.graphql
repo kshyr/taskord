@@ -20,8 +20,13 @@ type MutationRoot {
   authorize(username: String!, password: String!): UserWithTokens!
   refreshToken: AccessToken!
   createProject(name: String!, description: String, userId: UUID!): Project!
+  updateProject(id: UUID!, name: String, description: String, taskIds: [UUID!], tagIds: [UUID!]): Project!
+  deleteProject(id: UUID!): Project!
   createTag(name: String!, userId: UUID!): Tag!
-  createTask(name: String!, projectId: UUID, userId: UUID!, description: String, status: Int, priority: Int): Task!
+  updateTag(id: UUID!, name: String): Tag!
+  createTask(name: String!, projectId: UUID, userId: UUID!, description: String, status: Int, priority: Int, dueDate: DateTime): Task!
+  updateTask(id: UUID!, name: String, projectId: UUID, description: String, status: Int, priority: Int): Task!
+  deleteTask(id: UUID!): Task!
 }
 
 type Project {
@@ -38,7 +43,7 @@ type Project {
 type QueryRoot {
   projects(userId: UUID!): [Project!]!
   tags(userId: UUID!): [Tag!]!
-  tasks(userId: UUID!): Task
+  tasks(userId: UUID!): [Task!]!
 }
 
 type Tag {
@@ -51,12 +56,13 @@ type Tag {
 
 type Task {
   id: UUID!
-  projectId: UUID
+  project: Project
   userId: UUID!
   name: String!
   description: String
   status: Int!
   priority: Int!
+  dueDate: DateTime
   createdAt: DateTime!
   updatedAt: DateTime!
 }

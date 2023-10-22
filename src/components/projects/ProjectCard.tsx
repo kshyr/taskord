@@ -10,14 +10,20 @@ import { Badge } from "@/src/components/ui/badge";
 import { encodeSlug } from "@/src/utils/general.utils.ts";
 import Link from "next/link";
 import { ReactNode } from "react";
+import { Button } from "@/src/components/ui/button.tsx";
+import DeleteProjectButton from "@/src/components/projects/DeleteProjectButton.tsx";
 
-function ProjectLink({
-  project,
-  children,
-}: {
+type ProjectCardProps = {
+  project: Project;
+  deleteProject: (id: string) => void;
+};
+
+type ProjectLinkProps = {
   project: Project;
   children: ReactNode;
-}) {
+};
+
+function ProjectLink({ project, children }: ProjectLinkProps) {
   return (
     <Link href={`/projects/${encodeSlug(project.name)}`} key={project.id}>
       {children}
@@ -25,18 +31,22 @@ function ProjectLink({
   );
 }
 
-export default function ProjectCard({ project }: { project: Project }) {
+export default function ProjectCard({
+  project,
+  deleteProject,
+}: ProjectCardProps) {
   return (
     <Card className="flex flex-1 flex-col justify-between">
       <CardHeader>
         <ProjectLink project={project}>
           <CardTitle>{project.name}</CardTitle>
         </ProjectLink>
+        <DeleteProjectButton
+          projectId={project.id}
+          deleteProject={deleteProject}
+        />
         <CardDescription>{project.description}</CardDescription>
         <div className="mt-2 flex w-full flex-wrap justify-end gap-2">
-          <span className="text-gray-700 mr-auto text-sm font-medium">
-            {project.category}
-          </span>
           {project.tags?.map((tag) => (
             <Badge key={tag} variant="outline">
               {tag}
@@ -47,10 +57,15 @@ export default function ProjectCard({ project }: { project: Project }) {
       <CardContent>
         <div className="flex flex-col gap-2">
           {project.tasks
-            ?.sort(
-              (a, b) =>
-                new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime(),
-            )
+            ?.sort((a, b) => {
+              if (!a.dueDate && !b.dueDate) return 0;
+              if (!a.dueDate) return -1;
+              if (!b.dueDate) return 1;
+
+              return (
+                new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime()
+              );
+            })
             .map((task) => (
               <div
                 key={task.id}

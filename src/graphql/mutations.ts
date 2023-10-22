@@ -3,6 +3,7 @@ import { gql } from "graphql-request";
 import { JWT } from "next-auth/jwt";
 import { User } from "next-auth";
 import { getUserId } from "@/src/utils/auth.utils.ts";
+import { Task } from "@/src/types/types.ts";
 
 /* Auth Mutations */
 
@@ -110,7 +111,15 @@ type CreateProjectMutation = {
   };
 };
 
-export async function createProject(name: string, description: string) {
+type CreateProjectInput = {
+  name: string;
+  description: string;
+};
+
+export async function createProject({
+  name,
+  description,
+}: CreateProjectInput): Promise<{ name: string; description: string }> {
   const client = await getQueryClient();
   const userId = await getUserId();
   const res: CreateProjectMutation = await client.request(
@@ -135,3 +144,102 @@ export async function createProject(name: string, description: string) {
 
   return res.createProject;
 }
+
+export async function deleteProject(id: string) {
+  const client = await getQueryClient();
+  const userId = await getUserId();
+  await client.request(
+    gql`
+      mutation deleteProject($id: UUID!) {
+        deleteProject(id: $id) {
+          id
+        }
+      }
+    `,
+    { id },
+  );
+}
+
+/* Task Mutations */
+
+type CreateTaskInput = {
+  name: string;
+  description?: string;
+  projectId?: string;
+  priority: number;
+  status: number;
+  dueDate?: Date;
+};
+
+export const createTask = async ({
+  name,
+  description,
+  projectId,
+  priority,
+  status,
+  dueDate,
+}: CreateTaskInput): Promise<Task> => {
+  const client = await getQueryClient();
+  const userId = await getUserId();
+  const res: { createTask: Task } = await client.request(
+    gql`
+      mutation createTask(
+        $name: String!
+        $description: String
+        $userId: UUID!
+        $projectId: UUID
+        $priority: Int!
+        $status: Int!
+        $dueDate: DateTime
+      ) {
+        createTask(
+          name: $name
+          description: $description
+          userId: $userId
+          projectId: $projectId
+          priority: $priority
+          status: $status
+          dueDate: $dueDate
+        ) {
+          name
+          description
+          project {
+            id
+            name
+          }
+          priority
+          status
+          dueDate
+          createdAt
+          updatedAt
+        }
+      }
+    `,
+    {
+      name,
+      description,
+      userId,
+      projectId,
+      priority,
+      status,
+      dueDate,
+    },
+  );
+
+  return res.createTask;
+};
+
+export const deleteTask = async (id: string) => {
+  const client = await getQueryClient();
+  const userId = await getUserId();
+  await client.request(
+    gql`
+      mutation deleteTask($id: UUID!) {
+        deleteTask(id: $id) {
+          id
+        }
+      }
+    `,
+    { id },
+  );
+};

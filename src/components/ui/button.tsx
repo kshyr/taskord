@@ -58,15 +58,7 @@ const ButtonWithIcon = React.forwardRef<
   ButtonProps & { icon: React.ReactNode; gap?: number }
 >(({ icon, children, ...props }, ref) => {
   return (
-    <Button
-      ref={ref}
-      {...props}
-      className={cn(
-        "flex pl-2.5",
-        props.gap && `gap-${props?.gap}`,
-        props.className,
-      )}
-    >
+    <Button ref={ref} {...props} className={cn("flex pl-2.5", props.className)}>
       <div>{icon}</div>
       <span>{children}</span>
     </Button>

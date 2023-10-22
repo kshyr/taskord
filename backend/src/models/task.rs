@@ -1,7 +1,10 @@
-use crate::graphql::guards::JwtGuard;
-use crate::ID;
-use async_graphql::Object;
+use async_graphql::{Context, Object};
 use chrono::{DateTime, Utc};
+use sqlx::PgPool;
+
+use crate::graphql::guards::JwtGuard;
+use crate::models::project::Project;
+use crate::ID;
 
 #[derive(Debug, Clone, sqlx::FromRow)]
 pub struct Task {
@@ -25,8 +28,22 @@ impl Task {
     }
 
     #[graphql(guard = JwtGuard)]
-    async fn project_id(&self) -> Option<ID> {
-        self.project_id
+    async fn project(&self, ctx: &Context<'_>) -> Option<Project> {
+        let pool: &PgPool = ctx.data().unwrap();
+        let project = sqlx::query_as!(
+            Project,
+            r#"
+            SELECT *
+            FROM project
+            WHERE id = $1
+            "#,
+            self.project_id
+        )
+        .fetch_optional(pool)
+        .await
+        .unwrap();
+
+        project
     }
 
     #[graphql(guard = JwtGuard)]
