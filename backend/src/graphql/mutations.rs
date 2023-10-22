@@ -1,6 +1,7 @@
 use async_graphql::{Context, Object};
 use async_graphql::{Error, FieldError, Result};
 use bcrypt::{hash, verify};
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 
@@ -320,20 +321,22 @@ impl MutationRoot {
         description: Option<String>,
         status: Option<i16>,
         priority: Option<i16>,
+        due_date: Option<DateTime<Utc>>,
     ) -> Result<Task> {
         let pool: &PgPool = ctx.data()?;
         let task = sqlx::query_as!(
             Task,
             r#"
-            INSERT INTO task (project_id, user_id, name, description, status, priority)
-            VALUES ($1::UUID, $2, $3, $4, $5, $6) RETURNING *
+            INSERT INTO task (project_id, user_id, name, description, status, priority, due_date)
+            VALUES ($1::UUID, $2, $3, $4, $5, $6, $7) RETURNING *
             "#,
             project_id,
             user_id,
             name,
             description,
             status.unwrap_or(0),
-            priority.unwrap_or(0)
+            priority.unwrap_or(0),
+            due_date
         )
         .fetch_one(pool)
         .await?;

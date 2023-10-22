@@ -12,6 +12,7 @@ pub struct Task {
     pub description: Option<String>,
     pub status: i16,
     pub priority: i16,
+    pub due_date: Option<DateTime<Utc>>,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
 }
@@ -51,6 +52,11 @@ impl Task {
     #[graphql(guard = JwtGuard)]
     async fn priority(&self) -> i16 {
         self.priority
+    }
+
+    #[graphql(guard = JwtGuard)]
+    async fn due_date(&self) -> Option<DateTime<Utc>> {
+        self.due_date
     }
 
     #[graphql(guard = JwtGuard)]
