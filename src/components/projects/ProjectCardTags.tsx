@@ -14,7 +14,7 @@ function Tag({ children, key }: { children: ReactNode; key?: string }) {
   );
 }
 
-const ProjectCardTags = ({ tags }: { tags: string[] }) => {
+const ProjectCardTags = ({ tags }: { tags?: string[] }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [visibleTags, setVisibleTags] = useState<string[]>([]);
 
@@ -62,7 +62,7 @@ const ProjectCardTags = ({ tags }: { tags: string[] }) => {
       {visibleTags.map((tag) => (
         <Tag key={tag}>{tag}</Tag>
       ))}
-      {visibleTags.length < tags.length && (
+      {tags && visibleTags.length < tags.length && (
         <Tag>+{tags.length - visibleTags.length}</Tag>
       )}
     </div>

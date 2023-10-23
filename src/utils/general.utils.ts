@@ -11,9 +11,9 @@ export function pluralize(
   return base + pluralSuffix;
 }
 
-export const debounce = (func, delay) => {
-  let timeoutId;
-  return (...args) => {
+export const debounce = (func: Function, delay: number) => {
+  let timeoutId: NodeJS.Timeout;
+  return (...args: any[]) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => func(...args), delay);
   };
