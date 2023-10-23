@@ -1,8 +1,6 @@
 "use client";
-import React, { useState, useEffect, useRef, JSX, ReactNode } from "react";
-import { Project } from "@/src/types/types.ts";
+import React, { useState, useEffect, useRef, ReactNode } from "react";
 import { Badge } from "@/src/components/ui/badge";
-import { debounce } from "@/src/utils/general.utils.ts";
 
 function Tag({ children, key }: { children: ReactNode; key?: string }) {
   return (

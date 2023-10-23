@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/src/components/ui/card";
-import { Badge } from "@/src/components/ui/badge";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { priorityItems, Priority } from "@/src/lib/data/priorities.ts";
