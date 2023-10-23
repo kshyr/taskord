@@ -17,7 +17,8 @@ export default async function LandingHeader() {
           draggable={false}
         />
         <h1 className="hidden select-none font-head text-4xl sm:block">
-          taskord
+          task
+          <span className="text-success-border">ord</span>
         </h1>
       </div>
       <div className="flex items-center gap-8">

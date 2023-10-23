@@ -1,10 +1,12 @@
-enum Status {
-  OPEN,
+export enum StatusValue {
+  BACKLOG,
+  TODO,
   IN_PROGRESS,
-  CLOSED,
+  DONE,
+  CANCELED,
 }
 
-enum Priority {
+export enum PriorityValue {
   LOW,
   MEDIUM,
   HIGH,
@@ -15,8 +17,8 @@ export type Task = {
   name: string;
   project?: Project;
   description?: string;
-  status: Status;
-  priority: Priority;
+  status: StatusValue;
+  priority: PriorityValue;
   dueDate?: string;
   createdAt: string;
   updatedAt: string;
