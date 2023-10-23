@@ -6,16 +6,10 @@
     :root {
         --old-background: #1E1E1E;
         --old-foreground: #EAEAEA;
-        --black: #1A1A1A;
-        --darker: #2E2E2E;
-        --dark: #3E3E3E;
-        --gray: #626262;
         --violet: 273 25% 47%;
         --darkviolet: 263 27% 49%;
         --green: 150 30% 41%;
         --lightblue: 185 65% 60%;
-        --peach: #FDCAA6;
-        --darkred: #843B3B;
 
 
         --background: 0 0% 100%;

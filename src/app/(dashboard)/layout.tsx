@@ -29,7 +29,7 @@ export default function DashboardLayout({
         </Link>
         <Sidebar />
       </aside>
-      <div className="flex flex-1 flex-col gap-4 overflow-y-auto bg-[#141414] px-6 py-5">
+      <div className="flex flex-1 flex-col gap-4 overflow-y-auto bg-darker px-6 py-5">
         <Header />
         {children}
       </div>

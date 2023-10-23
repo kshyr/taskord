@@ -1,0 +1,96 @@
+import { PriorityValue, Project, StatusValue } from "@/src/types/types.ts";
+
+// generate project with type Project as if you were a user, give it a realistic feel (include tasks!!)
+export const sampleProjects: Project[] = [
+  {
+    id: "1",
+    name: "Website Redesign",
+    description: "Redesign the company website to improve user experience.",
+    tags: ["design", "frontend", "UX"],
+    tasks: [
+      {
+        id: "2",
+        name: "Design Homepage Mockup",
+        description: "Create a mockup of the new homepage design.",
+        status: StatusValue.IN_PROGRESS,
+        priority: PriorityValue.HIGH,
+        dueDate: "2023-11-01",
+        createdAt: "2023-10-20",
+        updatedAt: "2023-10-20",
+      },
+      {
+        id: "3",
+        name: "Gather User Feedback",
+        description: "Collect feedback from users about the current website.",
+        status: StatusValue.TODO,
+        priority: PriorityValue.MEDIUM,
+        dueDate: "2023-10-25",
+        createdAt: "2023-10-20",
+        updatedAt: "2023-10-21",
+      },
+    ],
+    createdAt: "2023-10-20",
+    updatedAt: "2023-10-21",
+  },
+  {
+    id: "4",
+    name: "Product Launch",
+    description: "Launch the new product line by the end of the quarter.",
+    tags: ["marketing", "product", "sales"],
+    tasks: [
+      {
+        id: "5",
+        name: "Plan Marketing Campaign",
+        description: "Outline the marketing strategies for the product launch.",
+        status: StatusValue.TODO,
+        priority: PriorityValue.MEDIUM,
+        dueDate: "2023-11-10",
+        createdAt: "2023-10-20",
+        updatedAt: "2023-10-20",
+      },
+      {
+        id: "6",
+        name: "Finalize Product Specifications",
+        description:
+          "Ensure all product specifications are documented and approved.",
+        status: StatusValue.BACKLOG,
+        priority: PriorityValue.LOW,
+        dueDate: "2023-11-05",
+        createdAt: "2023-10-20",
+        updatedAt: "2023-10-21",
+      },
+    ],
+    createdAt: "2023-10-20",
+    updatedAt: "2023-10-21",
+  },
+  // {
+  //   id: "3",
+  //   name: "Annual Team Building Event",
+  //   description: "Organize an event to foster team cohesion and morale.",
+  //   tags: ["HR", "events", "team"],
+  //   tasks: [
+  //     {
+  //       id: "5",
+  //       name: "Select Venue",
+  //       description: "Choose a suitable venue for the team building event.",
+  //       status: StatusValue.DONE,
+  //       priority: PriorityValue.LOW,
+  //       dueDate: "2023-09-30",
+  //       createdAt: "2023-10-01",
+  //       updatedAt: "2023-10-15",
+  //     },
+  //     {
+  //       id: "6",
+  //       name: "Send Invitations",
+  //       description: "Send out invitations to all team members.",
+  //       status: StatusValue.DONE,
+  //       priority: PriorityValue.MEDIUM,
+  //       dueDate: "2023-10-05",
+  //       createdAt: "2023-10-02",
+  //       updatedAt: "2023-10-05",
+  //     },
+  //   ],
+  //   createdAt: "2023-10-01",
+  //   updatedAt: "2023-10-15",
+  // },
+];

@@ -1,10 +1,13 @@
 import LandingHeader from "@/src/components/landing/Header.tsx";
-import { priorityItems, statusItems } from "@/src/lib/static_data.ts";
+import { priorityItems } from "@/src/lib/data/priorities.ts";
+import { statusItems } from "@/src/lib/data/statuses.ts";
 import { ReactNode } from "react";
+import { sampleProjects } from "@/src/lib/data/projects.ts";
+import ProjectCard from "@/src/components/projects/ProjectCard.tsx";
 
 export default function DesignPage() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-darker">
       <LandingHeader />
       <main className="container flex max-w-2xl flex-col gap-6 pt-8">
         <h1 className="font-head text-4xl">Design</h1>
@@ -41,6 +44,13 @@ export default function DesignPage() {
                 </div>
               );
             })}
+          </div>
+        </Category>
+        <Category title={"Project cards"}>
+          <div className="flex gap-4">
+            {sampleProjects.map((project) => (
+              <ProjectCard key={project.id} previewMode project={project} />
+            ))}
           </div>
         </Category>
       </main>

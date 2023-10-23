@@ -7,7 +7,7 @@ import ProfileDropdown from "@/src/components/general/ProfileDropdown";
 export default async function LandingHeader() {
   const session = await getUserSession();
   return (
-    <header className="flex w-full items-center justify-between border-b-2 bg-black px-4 py-2 pr-6">
+    <header className="flex w-full items-center justify-between border-b-2 bg-background px-4 py-2 pr-6">
       <div className="flex items-center justify-center">
         <Image
           src="/static/icons/logo.svg"
