@@ -1,6 +1,6 @@
 import { PriorityValue, Project, StatusValue } from "@/src/types/types.ts";
+import { addWeeks } from "date-fns";
 
-// generate project with type Project as if you were a user, give it a realistic feel (include tasks!!)
 export const sampleProjects: Project[] = [
   {
     id: "1",
@@ -24,7 +24,7 @@ export const sampleProjects: Project[] = [
         description: "Collect feedback from users about the current website.",
         status: StatusValue.TODO,
         priority: PriorityValue.MEDIUM,
-        dueDate: "2023-10-25",
+        dueDate: addWeeks(new Date(), 5).toISOString(),
         createdAt: "2023-10-20",
         updatedAt: "2023-10-21",
       },
@@ -55,7 +55,6 @@ export const sampleProjects: Project[] = [
           "Ensure all product specifications are documented and approved.",
         status: StatusValue.BACKLOG,
         priority: PriorityValue.LOW,
-        dueDate: "2023-11-05",
         createdAt: "2023-10-20",
         updatedAt: "2023-10-21",
       },

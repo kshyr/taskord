@@ -3,6 +3,7 @@ import { DEFAULT_MEMO_OPTS, getQueryClient } from "@/src/graphql/client.ts";
 import { gql } from "graphql-request";
 import { getUserId } from "@/src/utils/auth.utils.ts";
 import { memoize } from "nextjs-better-unstable-cache";
+import { Session } from "next-auth";
 
 /* Project Queries */
 
@@ -11,8 +12,8 @@ type ProjectPreviewQuery = {
 };
 
 export const getProjectPreviews = memoize(
-  async () => {
-    const client = await getQueryClient();
+  async (session: Session) => {
+    const client = await getQueryClient(session);
     const userId = await getUserId();
 
     const res: ProjectPreviewQuery = await client.request(
@@ -46,8 +47,8 @@ export const getProjectPreviews = memoize(
 );
 
 export const getProjectNames = memoize(
-  async (): Promise<{ id: string; name: string }[]> => {
-    const client = await getQueryClient();
+  async (session: Session): Promise<{ id: string; name: string }[]> => {
+    const client = await getQueryClient(session);
     const userId = await getUserId();
 
     const res: ProjectPreviewQuery = await client.request(
@@ -71,8 +72,14 @@ export const getProjectNames = memoize(
 );
 
 export const getProjectById = memoize(
-  async (id: string): Promise<Project> => {
-    const client = await getQueryClient();
+  async (session: Session, id: string): Promise<Project | null> => {
+    const client = await getQueryClient(session);
+
+    const projects = await getProjectPreviews(session);
+
+    if (!projects.find((project) => project.id === id)) {
+      return null;
+    }
 
     const res: { projectById: Project } = await client.request(
       gql`
@@ -105,7 +112,7 @@ export const getProjectById = memoize(
   },
   {
     ...DEFAULT_MEMO_OPTS,
-    revalidateTags: (id) => ["projects", id],
+    revalidateTags: (_, id) => ["projects", id],
   },
 );
 
@@ -116,8 +123,8 @@ type TasksQuery = {
 };
 
 export const getAllTasks = memoize(
-  async (): Promise<Task[]> => {
-    const client = await getQueryClient();
+  async (session: Session): Promise<Task[]> => {
+    const client = await getQueryClient(session);
     const userId = await getUserId();
 
     const res: TasksQuery = await client.request(

@@ -13,6 +13,7 @@ import { statusItems, Status } from "@/src/lib/data/statuses.ts";
 import { StatusValue } from "@/src/types/types.ts";
 import { cn } from "@/src/utils/styles.utils.ts";
 import ProjectCardTags from "@/src/components/projects/ProjectCardTags.tsx";
+import { getRemainingTime } from "@/src/utils/datetime.utils.ts";
 
 type ProjectCardProps = {
   project: Project;
@@ -41,13 +42,13 @@ export default function ProjectCard({
   previewMode = false,
 }: ProjectCardProps) {
   return (
-    <Card className="flex flex-1 flex-col justify-between">
+    <Card className="flex flex-1 flex-col justify-between transition-all hover:border-muted-foreground/50 hover:drop-shadow-lg">
       <CardHeader className="gap-3">
         <ProjectLink project={project} previewMode={previewMode}>
           <CardTitle>{project.name}</CardTitle>
         </ProjectLink>
         <CardDescription>{project.description}</CardDescription>
-        <ProjectCardTags tags={project.tags} />
+        {project.tags && <ProjectCardTags tags={project.tags} />}
       </CardHeader>
       <CardContent className="flex-grow">
         <div className="flex flex-col gap-2">
@@ -62,9 +63,6 @@ export default function ProjectCard({
               );
             })
             ?.map((task) => {
-              // const status = statuses.find(
-              //  (s) => s.value === task.status,
-              //) as Status;
               const status = statusItems.statuses.find(
                 (s) => s.value === task.status,
               ) as Status;
@@ -79,12 +77,24 @@ export default function ProjectCard({
                 task.status === StatusValue.IN_PROGRESS ||
                 task.status === StatusValue.TODO;
 
+              const remainingTime = task.dueDate
+                ? getRemainingTime(task.dueDate)
+                : "";
+
               return (
                 <div
                   key={task.id}
-                  className="flex w-full items-center gap-1 rounded-lg border border-border bg-neutral-800 px-3 py-2 text-sm font-medium"
+                  className={cn(
+                    "flex w-full items-center gap-1 rounded-lg border border-border bg-neutral-800 px-3 py-2 text-sm font-medium",
+                    "cursor-pointer transition-all hover:border-muted-foreground hover:drop-shadow-md",
+                  )}
                 >
                   <span className="mr-auto">{task.name}</span>
+                  {remainingTime && (
+                    <span className={cn("text-xs", remainingTime.twColor)}>
+                      {remainingTime.time}
+                    </span>
+                  )}
                   <StatusIcon
                     size={statusItems.defaults.iconSize}
                     className={cn(

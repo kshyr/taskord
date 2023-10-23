@@ -9,17 +9,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
+  AlertDialogAction,
 } from "@/src/components/ui/alert-dialog.tsx";
 
 type DeleteActionProps = {
-  itemId: string;
-  deleteMutation: (id: string) => void;
+  deleteMutation: () => Promise<void>;
 };
 
-export default function DeleteAction({
-  itemId,
-  deleteMutation,
-}: DeleteActionProps) {
+export default function DeleteAction({ deleteMutation }: DeleteActionProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -35,9 +32,13 @@ export default function DeleteAction({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <Button variant="destructive" onClick={() => deleteMutation(itemId)}>
-            Delete
-          </Button>
+          <form action={deleteMutation}>
+            <AlertDialogAction asChild>
+              <Button type="submit" variant="destructive">
+                Delete
+              </Button>
+            </AlertDialogAction>
+          </form>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

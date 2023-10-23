@@ -1,7 +1,7 @@
 import { getPublicQueryClient, getQueryClient } from "@/src/graphql/client.ts";
 import { gql } from "graphql-request";
 import { JWT } from "next-auth/jwt";
-import { User } from "next-auth";
+import { Session, User } from "next-auth";
 import { getUserId } from "@/src/utils/auth.utils.ts";
 import { Task } from "@/src/types/types.ts";
 
@@ -112,15 +112,17 @@ type CreateProjectMutation = {
 };
 
 type CreateProjectInput = {
+  session: Session;
   name: string;
   description: string;
 };
 
 export async function createProject({
+  session,
   name,
   description,
 }: CreateProjectInput): Promise<{ name: string; description: string }> {
-  const client = await getQueryClient();
+  const client = await getQueryClient(session);
   const userId = await getUserId();
   const res: CreateProjectMutation = await client.request(
     gql`
@@ -145,8 +147,8 @@ export async function createProject({
   return res.createProject;
 }
 
-export async function deleteProject(id: string) {
-  const client = await getQueryClient();
+export async function deleteProject(session: Session, id: string) {
+  const client = await getQueryClient(session);
   await client.request(
     gql`
       mutation deleteProject($id: UUID!) {
@@ -162,6 +164,7 @@ export async function deleteProject(id: string) {
 /* Task Mutations */
 
 type CreateTaskInput = {
+  session: Session;
   name: string;
   description?: string;
   projectId?: string;
@@ -171,14 +174,10 @@ type CreateTaskInput = {
 };
 
 export const createTask = async ({
-  name,
-  description,
-  projectId,
-  priority,
-  status,
-  dueDate,
+  session,
+  ...input
 }: CreateTaskInput): Promise<Task> => {
-  const client = await getQueryClient();
+  const client = await getQueryClient(session);
   const userId = await getUserId();
   const res: { createTask: Task } = await client.request(
     gql`
@@ -215,21 +214,16 @@ export const createTask = async ({
       }
     `,
     {
-      name,
-      description,
+      ...input,
       userId,
-      projectId,
-      priority,
-      status,
-      dueDate,
     },
   );
 
   return res.createTask;
 };
 
-export const deleteTask = async (id: string) => {
-  const client = await getQueryClient();
+export const deleteTask = async (session: Session, id: string) => {
+  const client = await getQueryClient(session);
   await client.request(
     gql`
       mutation deleteTask($id: UUID!) {

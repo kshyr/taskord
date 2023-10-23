@@ -5,11 +5,16 @@ import { pluralize } from "@/src/utils/general.utils.ts";
 import CreateProjectModal from "@/src/components/projects/CreateProjectModal.tsx";
 import { revalidateTag } from "next/cache";
 import { getUserSession } from "@/src/utils/auth.utils.ts";
+import { Session } from "next-auth";
 
 export default async function ProjectsPage() {
-  await getUserSession();
+  const session = await getUserSession();
 
-  const projects = await getProjectPreviews();
+  if (!session) {
+    return null;
+  }
+
+  const projects = await getProjectPreviews(session);
 
   async function createProject(formData: FormData) {
     "use server";
@@ -17,7 +22,11 @@ export default async function ProjectsPage() {
     const name = formData.get("name") as string;
     const description = formData.get("description") as string;
 
-    await createProjectMutation({ name, description });
+    await createProjectMutation({
+      session: session as Session,
+      name,
+      description,
+    });
 
     revalidateTag("projects");
   }

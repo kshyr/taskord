@@ -1,5 +1,5 @@
 import { GraphQLClient } from "graphql-request";
-import { getUserSession } from "@/src/utils/auth.utils";
+import { Session } from "next-auth";
 
 // if dev, use dev endpoint, else use prod endpoint
 export const apiUrl =
@@ -11,9 +11,7 @@ export function getPublicQueryClient() {
   return new GraphQLClient(apiUrl);
 }
 
-export async function getQueryClient() {
-  const session = await getUserSession();
-
+export async function getQueryClient(session: Session) {
   if (!session) {
     throw new Error("No session found");
   }

@@ -29,7 +29,9 @@ export default function Breadcrumb({ projectNameIds }: BreadcumbProps) {
                 "font-head text-2xl tracking-wider",
               )}
             >
-              {projectNameIds?.find((p) => p.id === path)?.name || path}
+              {index === 1
+                ? projectNameIds?.find((p) => p.id === path)?.name ?? ""
+                : path}
             </Link>
             {index === paths.length - 1 || (
               <span className="select-none text-[22px] text-muted-foreground">

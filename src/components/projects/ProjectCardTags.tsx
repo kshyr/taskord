@@ -1,13 +1,26 @@
 "use client";
 import React, { useState, useEffect, useRef, ReactNode } from "react";
 import { Badge } from "@/src/components/ui/badge";
+import { cn } from "@/src/utils/styles.utils.ts";
 
-function Tag({ children, key }: { children: ReactNode; key?: string }) {
+function Tag({
+  children,
+  key,
+  loading,
+}: {
+  children: ReactNode;
+  key?: string;
+  loading?: boolean;
+}) {
   return (
     <Badge
       key={key}
       variant="outline"
-      className="text-sm text-muted-foreground shadow-inner"
+      className={cn(
+        "cursor-pointer text-sm text-muted-foreground shadow-inner",
+        "hover:border-muted-foreground hover:text-foreground",
+        loading && "animate-pulse",
+      )}
     >
       {children}
     </Badge>
@@ -15,6 +28,7 @@ function Tag({ children, key }: { children: ReactNode; key?: string }) {
 }
 
 const ProjectCardTags = ({ tags }: { tags?: string[] }) => {
+  const [isMounted, setIsMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [visibleTags, setVisibleTags] = useState<string[]>([]);
 
@@ -51,19 +65,26 @@ const ProjectCardTags = ({ tags }: { tags?: string[] }) => {
 
     updateVisibleTags();
     window.addEventListener("resize", updateVisibleTags);
+    setIsMounted(true);
 
     return () => {
       window.removeEventListener("resize", updateVisibleTags);
     };
-  }, [tags]);
+  }, [tags, isMounted]);
 
   return (
     <div className="mt-2 flex w-full justify-end gap-2" ref={containerRef}>
-      {visibleTags.map((tag) => (
-        <Tag key={tag}>{tag}</Tag>
-      ))}
-      {tags && visibleTags.length < tags.length && (
-        <Tag>+{tags.length - visibleTags.length}</Tag>
+      {!isMounted ? (
+        <Tag loading>...</Tag>
+      ) : (
+        <>
+          {visibleTags.map((tag) => (
+            <Tag key={tag}>{tag}</Tag>
+          ))}
+          {tags && visibleTags.length < tags.length && (
+            <Tag>+{tags.length - visibleTags.length}</Tag>
+          )}
+        </>
       )}
     </div>
   );

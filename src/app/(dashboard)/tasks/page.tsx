@@ -1,18 +1,20 @@
 import TasksTable from "@/src/components/tasks/TasksTable.tsx";
 import { getAllTasks, getProjectPreviews } from "@/src/graphql/queries.ts";
-import {
-  createTask as createTaskMutation,
-  deleteTask as deleteTaskMutation,
-} from "@/src/graphql/mutations.ts";
+import { createTask as createTaskMutation } from "@/src/graphql/mutations.ts";
 import { revalidateTag } from "next/cache";
 import CreateTaskModal from "@/src/components/tasks/CreateTaskModal.tsx";
 import { getUserSession } from "@/src/utils/auth.utils.ts";
+import { Session } from "next-auth";
 
 export default async function TasksPage() {
-  await getUserSession();
+  const session = await getUserSession();
 
-  const tasks = await getAllTasks();
-  const projects = await getProjectPreviews();
+  if (!session) {
+    return null;
+  }
+
+  const tasks = await getAllTasks(session);
+  const projects = await getProjectPreviews(session);
 
   async function createTask(formData: FormData) {
     "use server";
@@ -25,6 +27,7 @@ export default async function TasksPage() {
     const status = formData.get("status") as string;
 
     await createTaskMutation({
+      session: session as Session,
       name,
       description,
       dueDate: new Date(dueDate),
@@ -37,19 +40,10 @@ export default async function TasksPage() {
     revalidateTag("projects");
   }
 
-  async function deleteTask(id: string) {
-    "use server";
-
-    await deleteTaskMutation(id);
-
-    revalidateTag("tasks");
-    revalidateTag("projects");
-  }
-
   return (
     <div className="flex flex-col gap-3">
       <CreateTaskModal createTask={createTask} projects={projects} />
-      <TasksTable tasks={tasks} deleteTask={deleteTask} />
+      <TasksTable tasks={tasks} />
     </div>
   );
 }
