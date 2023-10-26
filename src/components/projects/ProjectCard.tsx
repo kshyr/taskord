@@ -14,6 +14,8 @@ import { StatusValue } from "@/src/types/types.ts";
 import { cn } from "@/src/utils/styles.utils.ts";
 import ProjectCardTags from "@/src/components/projects/ProjectCardTags.tsx";
 import { getRemainingTime } from "@/src/utils/datetime.utils.ts";
+import { sortTasks } from "@/src/utils/sort.utils.ts";
+import { ArrowRight } from "lucide-react";
 
 type ProjectCardProps = {
   project: Project;
@@ -31,7 +33,7 @@ function ProjectLink({ project, previewMode, children }: ProjectLinkProps) {
     return <div className="cursor-pointer">{children}</div>;
   }
   return (
-    <Link href={`/projects/${project.id}`} key={project.id}>
+    <Link href={`/projects/${project.id}`} className="w-fit" key={project.id}>
       {children}
     </Link>
   );
@@ -44,76 +46,71 @@ export default function ProjectCard({
   return (
     <Card className="flex flex-1 flex-col justify-between transition-all hover:border-muted-foreground/50 hover:drop-shadow-lg">
       <CardHeader className="gap-3">
-        <ProjectLink project={project} previewMode={previewMode}>
-          <CardTitle>{project.name}</CardTitle>
-        </ProjectLink>
+        <div className="flex items-center justify-between">
+          <ProjectLink project={project} previewMode={previewMode}>
+            <CardTitle>{project.name}</CardTitle>
+          </ProjectLink>
+          <ProjectLink project={project} previewMode={previewMode}>
+            <ArrowRight />
+          </ProjectLink>
+        </div>
         <CardDescription>{project.description}</CardDescription>
         {project.tags && <ProjectCardTags tags={project.tags} />}
       </CardHeader>
       <CardContent className="flex-grow">
         <div className="flex flex-col gap-2">
-          {project.tasks
-            ?.sort((a, b) => {
-              if (!a.dueDate && !b.dueDate) return 0;
-              if (!a.dueDate) return -1;
-              if (!b.dueDate) return 1;
+          {project.tasks?.sort(sortTasks)?.map((task) => {
+            const status = statusItems.statuses.find(
+              (s) => s.value === task.status,
+            ) as Status;
+            const StatusIcon = status.icon;
 
-              return (
-                new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime()
-              );
-            })
-            ?.map((task) => {
-              const status = statusItems.statuses.find(
-                (s) => s.value === task.status,
-              ) as Status;
-              const StatusIcon = status.icon;
+            const priority = priorityItems.priorities.find(
+              (p) => p.value === task.priority,
+            ) as Priority;
+            const PriorityIcon = priority.icon;
 
-              const priority = priorityItems.priorities.find(
-                (p) => p.value === task.priority,
-              ) as Priority;
-              const PriorityIcon = priority.icon;
+            const isPriorityDisplayed =
+              task.status === StatusValue.IN_PROGRESS ||
+              task.status === StatusValue.TODO;
 
-              const isPriorityDisplayed =
-                task.status === StatusValue.IN_PROGRESS ||
-                task.status === StatusValue.TODO;
+            const remainingTime = task.dueDate
+              ? getRemainingTime(task.dueDate)
+              : "";
 
-              const remainingTime = task.dueDate
-                ? getRemainingTime(task.dueDate)
-                : "";
-
-              return (
-                <div
-                  key={task.id}
+            return (
+              <div
+                key={task.id}
+                className={cn(
+                  "flex w-full items-center gap-1 rounded-lg border border-border bg-neutral-800 px-3 py-2 text-sm font-medium",
+                  "cursor-pointer transition-all hover:border-muted-foreground hover:drop-shadow-md",
+                )}
+              >
+                <span className="mr-auto">{task.name}</span>
+                {remainingTime && (
+                  <span className={cn("text-xs", remainingTime.twColor)}>
+                    {remainingTime.time}
+                  </span>
+                )}
+                <StatusIcon
+                  size={statusItems.defaults.iconSize}
                   className={cn(
-                    "flex w-full items-center gap-1 rounded-lg border border-border bg-neutral-800 px-3 py-2 text-sm font-medium",
-                    "cursor-pointer transition-all hover:border-muted-foreground hover:drop-shadow-md",
+                    statusItems.defaults.className,
+                    status.className,
                   )}
-                >
-                  <span className="mr-auto">{task.name}</span>
-                  {remainingTime && (
-                    <span className={cn("text-xs", remainingTime.twColor)}>
-                      {remainingTime.time}
-                    </span>
-                  )}
-                  <StatusIcon
-                    size={statusItems.defaults.iconSize}
+                />
+                {isPriorityDisplayed && (
+                  <PriorityIcon
+                    size={priorityItems.defaults.iconSize}
                     className={cn(
-                      statusItems.defaults.className,
-                      status.className,
+                      priorityItems.defaults.className,
+                      priority.className,
                     )}
                   />
-                  {isPriorityDisplayed && (
-                    <PriorityIcon
-                      size={priorityItems.defaults.iconSize}
-                      className={cn(
-                        priorityItems.defaults.className,
-                        priority.className,
-                      )}
-                    />
-                  )}
-                </div>
-              );
-            })}
+                )}
+              </div>
+            );
+          })}
         </div>
       </CardContent>
     </Card>

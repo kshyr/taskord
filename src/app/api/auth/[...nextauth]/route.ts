@@ -5,13 +5,15 @@ import {
   authorize,
 } from "@/src/graphql/mutations";
 import { JWT } from "next-auth/jwt";
+import { redirect } from "next/navigation";
 
 async function refreshToken(token: JWT): Promise<JWT> {
   let res;
   try {
     res = await refreshTokenMutation(token);
   } catch (e) {
-    console.error(e);
+    console.error("REFRESH TOKEN ERROR: ", e);
+    redirect("/signin");
     return token;
   }
   return res;
