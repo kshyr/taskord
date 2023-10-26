@@ -13,10 +13,6 @@ type Column = {
   tasks: Task[];
 };
 
-type KanbanBoardProps = {
-  tasks?: Task[];
-};
-
 function buildColumns(tasks: Task[]): Column[] {
   const columns: Column[] = [
     {
@@ -57,15 +53,26 @@ function buildColumns(tasks: Task[]): Column[] {
   return columns;
 }
 
-export default function KanbanBoard({ tasks }: KanbanBoardProps) {
-  const columns = useMemo(() => buildColumns(tasks || []), [tasks]);
-  const [parent, setParent] = useState<UniqueIdentifier | null>(1);
+type KanbanBoardProps = {
+  tasks?: Task[];
+  updateTaskStatus: (id: string, status: StatusValue) => Promise<void>;
+};
 
-  const draggableMarkup = <DraggableTask id={1}>Drag me</DraggableTask>;
+export default function KanbanBoard({
+  tasks,
+  updateTaskStatus,
+}: KanbanBoardProps) {
+  const columns = buildColumns(tasks || []);
 
-  function handleDragEnd(event: DragEndEvent) {
-    const { over } = event;
-    over && setParent(over.id);
+  async function handleDragEnd(event: DragEndEvent) {
+    const { over, active } = event;
+
+    if (over && tasks) {
+      const task = tasks.find((task) => task.id === active.id) as Task;
+      console.log("task", task, "over", over);
+      const res = await updateTaskStatus(task.id, over.id as StatusValue);
+      console.log(res);
+    }
   }
 
   return (
@@ -77,8 +84,11 @@ export default function KanbanBoard({ tasks }: KanbanBoardProps) {
             className="flex min-h-[40rem] min-w-[20rem] flex-col gap-4 rounded-lg border bg-card p-4"
           >
             <h3 className=" font-bold">{column.name}</h3>
-            <DroppableColumn id={column.status} key={column.status}>
-              {parent === column.status ? draggableMarkup : "Drop here"}
+            <DroppableColumn status={column.status} key={column.status}>
+              {column.tasks.map((task) => (
+                <DraggableTask key={task.id} task={task}></DraggableTask>
+              ))}
+              Drop here
             </DroppableColumn>
           </div>
         ))}

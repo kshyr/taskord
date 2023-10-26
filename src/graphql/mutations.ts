@@ -3,7 +3,7 @@ import { gql } from "graphql-request";
 import { JWT } from "next-auth/jwt";
 import { Session, User } from "next-auth";
 import { getUserId } from "@/src/utils/auth.utils.ts";
-import { Task } from "@/src/types/types.ts";
+import { StatusValue, Task } from "@/src/types/types.ts";
 
 /* Auth Mutations */
 
@@ -233,5 +233,25 @@ export const deleteTask = async (session: Session, id: string) => {
       }
     `,
     { id },
+  );
+};
+
+export const updateTaskStatus = async (
+  session: Session,
+  id: string,
+  status: StatusValue,
+) => {
+  const client = await getQueryClient(session);
+  return await client.request(
+    gql`
+      mutation updateTask($id: UUID!, $status: Int) {
+        updateTask(id: $id, status: $status) {
+          id
+          name
+          status
+        }
+      }
+    `,
+    { id, status },
   );
 };

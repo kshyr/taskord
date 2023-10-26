@@ -366,6 +366,18 @@ impl MutationRoot {
         .fetch_one(pool)
         .await?;
 
+        let updated_project_id = if let Some(project_id) = project_id {
+            Some(project_id)
+        } else {
+            existing_task.project_id
+        };
+
+        let updated_description = if let Some(description) = description {
+            Some(description)
+        } else {
+            existing_task.description
+        };
+
         let updated_task = sqlx::query_as!(
             Task,
             r#"
@@ -375,8 +387,8 @@ impl MutationRoot {
             RETURNING *
             "#,
             name.unwrap_or(existing_task.name),
-            project_id,
-            description,
+            updated_project_id,
+            updated_description,
             status.unwrap_or(existing_task.status),
             priority.unwrap_or(existing_task.priority),
             id
