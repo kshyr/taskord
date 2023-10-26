@@ -5,6 +5,7 @@ import { revalidateTag } from "next/cache";
 import { getUserSession } from "@/src/utils/auth.utils.ts";
 import { Session } from "next-auth";
 import { redirect } from "next/navigation";
+import KanbanBoard from "@/src/components/projects/kanban/KanbanBoard.tsx";
 
 export default async function ProjectPage({
   params,
@@ -35,6 +36,7 @@ export default async function ProjectPage({
       <h1 className="text-2xl font-bold">{project.name}</h1>
       <p className="font-xl font-normal">This is a project page</p>
       <DeleteAction deleteMutation={deleteProject} />
+      <KanbanBoard tasks={project.tasks} />
     </div>
   );
 }

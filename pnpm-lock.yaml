@@ -5,6 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@dnd-kit/core':
+    specifier: ^6.0.8
+    version: 6.0.8(react-dom@18.2.0)(react@18.2.0)
+  '@dnd-kit/sortable':
+    specifier: ^7.0.2
+    version: 7.0.2(@dnd-kit/core@6.0.8)(react@18.2.0)
   '@radix-ui/react-alert-dialog':
     specifier: ^1.0.5
     version: 1.0.5(@types/react-dom@18.2.7)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)
@@ -123,6 +129,49 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.14.0
+    dev: false
+
+  /@dnd-kit/accessibility@3.0.1(react@18.2.0):
+    resolution: {integrity: sha512-HXRrwS9YUYQO9lFRc/49uO/VICbM+O+ZRpFDe9Pd1rwVv2PCNkRiTZRdxrDgng/UkvdC3Re9r2vwPpXXrWeFzg==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+      tslib: 2.6.2
+    dev: false
+
+  /@dnd-kit/core@6.0.8(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-lYaoP8yHTQSLlZe6Rr9qogouGUz9oRUj4AHhDQGQzq/hqaJRpFo65X+JKsdHf8oUFBzx5A+SJPUvxAwTF2OabA==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@dnd-kit/accessibility': 3.0.1(react@18.2.0)
+      '@dnd-kit/utilities': 3.2.1(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      tslib: 2.6.2
+    dev: false
+
+  /@dnd-kit/sortable@7.0.2(@dnd-kit/core@6.0.8)(react@18.2.0):
+    resolution: {integrity: sha512-wDkBHHf9iCi1veM834Gbk1429bd4lHX4RpAwT0y2cHLf246GAvU2sVw/oxWNpPKQNQRQaeGXhAVgrOl1IT+iyA==}
+    peerDependencies:
+      '@dnd-kit/core': ^6.0.7
+      react: '>=16.8.0'
+    dependencies:
+      '@dnd-kit/core': 6.0.8(react-dom@18.2.0)(react@18.2.0)
+      '@dnd-kit/utilities': 3.2.1(react@18.2.0)
+      react: 18.2.0
+      tslib: 2.6.2
+    dev: false
+
+  /@dnd-kit/utilities@3.2.1(react@18.2.0):
+    resolution: {integrity: sha512-OOXqISfvBw/1REtkSK2N3Fi2EQiLMlWUlqnOK/UpOISqBZPWpE6TqL+jcPtMOkE8TqYGiURvRdPSI9hltNUjEA==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+      tslib: 2.6.2
     dev: false
 
   /@eslint-community/eslint-utils@4.4.0(eslint@8.45.0):
@@ -2670,7 +2719,7 @@ packages:
       - babel-plugin-macros
     dev: false
 
-  /next@13.5.6(react-dom@18.2.0)(react@18.3.0-canary-d803f519e-20231020):
+  /next@13.5.6(react-dom@18.2.0)(react@18.3.0-canary-a9985529f-20231025):
     resolution: {integrity: sha512-Y2wTcTbO4WwEsVb4A8VSnOsG1I9ok+h74q0ZdxkwM3EODqrs4pasq7O0iUxbcS9VtWMicG7f3+HAj0r1+NtKSw==}
     engines: {node: '>=16.14.0'}
     hasBin: true
@@ -2690,9 +2739,9 @@ packages:
       busboy: 1.6.0
       caniuse-lite: 1.0.30001543
       postcss: 8.4.31
-      react: 18.3.0-canary-d803f519e-20231020
+      react: 18.3.0-canary-a9985529f-20231025
       react-dom: 18.2.0(react@18.2.0)
-      styled-jsx: 5.1.1(react@18.3.0-canary-d803f519e-20231020)
+      styled-jsx: 5.1.1(react@18.3.0-canary-a9985529f-20231025)
       watchpack: 2.4.0
     optionalDependencies:
       '@next/swc-darwin-arm64': 13.5.6
@@ -2713,8 +2762,8 @@ packages:
     resolution: {integrity: sha512-vBXdSjQRKU3OqHyKir/1AcectGAUQKjONuR/kg+c2BA2Qiay3lBcP9NqaFffUE0r8dwWfp4dkVczVtfDtDiEgw==}
     dependencies:
       chalk: 4.1.2
-      next: 13.5.6(react-dom@18.2.0)(react@18.3.0-canary-d803f519e-20231020)
-      react: 18.3.0-canary-d803f519e-20231020
+      next: 13.5.6(react-dom@18.2.0)(react@18.3.0-canary-a9985529f-20231025)
+      react: 18.3.0-canary-a9985529f-20231025
       typescript: 5.2.2
     transitivePeerDependencies:
       - '@babel/core'
@@ -3213,8 +3262,8 @@ packages:
       loose-envify: 1.4.0
     dev: false
 
-  /react@18.3.0-canary-d803f519e-20231020:
-    resolution: {integrity: sha512-1AB43HIkom7FcTSOk4UsMfW2oFIXQ4YYQ9J7sZGRKwEyrDk18xd+EtSNcCeWTenrVN/H9xd+QSyN4pz/zJ9jWQ==}
+  /react@18.3.0-canary-a9985529f-20231025:
+    resolution: {integrity: sha512-V6DSSoK4DoklyzkHFrRn643h2x+L9FqdI+c/Y8/kJsd/FdLudidP2GeJ7Uv78Vm4jZ6FAT41/sbKP4XNGjfTgQ==}
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
@@ -3518,7 +3567,7 @@ packages:
       react: 18.2.0
     dev: false
 
-  /styled-jsx@5.1.1(react@18.3.0-canary-d803f519e-20231020):
+  /styled-jsx@5.1.1(react@18.3.0-canary-a9985529f-20231025):
     resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
     engines: {node: '>= 12.0.0'}
     peerDependencies:
@@ -3532,7 +3581,7 @@ packages:
         optional: true
     dependencies:
       client-only: 0.0.1
-      react: 18.3.0-canary-d803f519e-20231020
+      react: 18.3.0-canary-a9985529f-20231025
     dev: false
 
   /sucrase@3.34.0:
