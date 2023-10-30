@@ -4,12 +4,14 @@ import {
   deleteProject as deleteProjectMutation,
   updateTaskStatus as updateTaskStatusMutation,
 } from "@/src/graphql/mutations.ts";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { getUserSession } from "@/src/utils/auth.utils.ts";
 import { Session } from "next-auth";
 import { redirect } from "next/navigation";
 import KanbanBoard from "@/src/components/projects/kanban/KanbanBoard.tsx";
 import { StatusValue } from "@/src/types/types.ts";
+import { getSocket, getSubscriptionClient } from "@/src/graphql/client.ts";
+import { gql } from "graphql-request";
 
 export default async function ProjectPage({
   params,

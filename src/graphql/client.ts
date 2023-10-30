@@ -1,5 +1,6 @@
 import { GraphQLClient } from "graphql-request";
 import { Session } from "next-auth";
+import { createClient } from "graphql-ws";
 
 // if dev, use dev endpoint, else use prod endpoint
 export const apiUrl =
@@ -22,6 +23,17 @@ export async function getQueryClient(session: Session) {
       Authorization: "Bearer " + session.user.accessToken.token,
     },
   });
+}
+
+export function getSubscriptionClient(session: Session) {
+  if (!session) {
+    throw new Error("No session found");
+  }
+
+  const offsetOr = process.env.VERCEL_ENV === "development" ? 0 : 1;
+  const url = `ws://localhost:8080/ws`;
+
+  return createClient({ url });
 }
 
 type MemoOpts = {

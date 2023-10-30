@@ -59,6 +59,9 @@ dependencies:
   graphql-request:
     specifier: ^6.1.0
     version: 6.1.0(encoding@0.1.13)(graphql@16.8.1)
+  graphql-ws:
+    specifier: ^5.14.2
+    version: 5.14.2(graphql@16.8.1)
   lucide-react:
     specifier: ^0.285.0
     version: 0.285.0(react@18.2.0)
@@ -2199,6 +2202,15 @@ packages:
       - encoding
     dev: false
 
+  /graphql-ws@5.14.2(graphql@16.8.1):
+    resolution: {integrity: sha512-LycmCwhZ+Op2GlHz4BZDsUYHKRiiUz+3r9wbhBATMETNlORQJAaFlAgTFoeRh6xQoQegwYwIylVD1Qns9/DA3w==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      graphql: '>=0.11 <=16'
+    dependencies:
+      graphql: 16.8.1
+    dev: false
+
   /graphql@16.8.1:
     resolution: {integrity: sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==}
     engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
@@ -2719,7 +2731,7 @@ packages:
       - babel-plugin-macros
     dev: false
 
-  /next@13.5.6(react-dom@18.2.0)(react@18.3.0-canary-a9985529f-20231025):
+  /next@13.5.6(react-dom@18.2.0)(react@18.3.0-canary-8039e6d0b-20231026):
     resolution: {integrity: sha512-Y2wTcTbO4WwEsVb4A8VSnOsG1I9ok+h74q0ZdxkwM3EODqrs4pasq7O0iUxbcS9VtWMicG7f3+HAj0r1+NtKSw==}
     engines: {node: '>=16.14.0'}
     hasBin: true
@@ -2739,9 +2751,9 @@ packages:
       busboy: 1.6.0
       caniuse-lite: 1.0.30001543
       postcss: 8.4.31
-      react: 18.3.0-canary-a9985529f-20231025
+      react: 18.3.0-canary-8039e6d0b-20231026
       react-dom: 18.2.0(react@18.2.0)
-      styled-jsx: 5.1.1(react@18.3.0-canary-a9985529f-20231025)
+      styled-jsx: 5.1.1(react@18.3.0-canary-8039e6d0b-20231026)
       watchpack: 2.4.0
     optionalDependencies:
       '@next/swc-darwin-arm64': 13.5.6
@@ -2762,8 +2774,8 @@ packages:
     resolution: {integrity: sha512-vBXdSjQRKU3OqHyKir/1AcectGAUQKjONuR/kg+c2BA2Qiay3lBcP9NqaFffUE0r8dwWfp4dkVczVtfDtDiEgw==}
     dependencies:
       chalk: 4.1.2
-      next: 13.5.6(react-dom@18.2.0)(react@18.3.0-canary-a9985529f-20231025)
-      react: 18.3.0-canary-a9985529f-20231025
+      next: 13.5.6(react-dom@18.2.0)(react@18.3.0-canary-8039e6d0b-20231026)
+      react: 18.3.0-canary-8039e6d0b-20231026
       typescript: 5.2.2
     transitivePeerDependencies:
       - '@babel/core'
@@ -3262,8 +3274,8 @@ packages:
       loose-envify: 1.4.0
     dev: false
 
-  /react@18.3.0-canary-a9985529f-20231025:
-    resolution: {integrity: sha512-V6DSSoK4DoklyzkHFrRn643h2x+L9FqdI+c/Y8/kJsd/FdLudidP2GeJ7Uv78Vm4jZ6FAT41/sbKP4XNGjfTgQ==}
+  /react@18.3.0-canary-8039e6d0b-20231026:
+    resolution: {integrity: sha512-vlVdzo0PJiwshpfpMSxB4iirygntWJ8AD3nMetQBp6T8YHLv7WMRqMOfna9wn5GMXRJcUw9paQklNiOVGP68ag==}
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
@@ -3567,7 +3579,7 @@ packages:
       react: 18.2.0
     dev: false
 
-  /styled-jsx@5.1.1(react@18.3.0-canary-a9985529f-20231025):
+  /styled-jsx@5.1.1(react@18.3.0-canary-8039e6d0b-20231026):
     resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
     engines: {node: '>= 12.0.0'}
     peerDependencies:
@@ -3581,7 +3593,7 @@ packages:
         optional: true
     dependencies:
       client-only: 0.0.1
-      react: 18.3.0-canary-a9985529f-20231025
+      react: 18.3.0-canary-8039e6d0b-20231026
     dev: false
 
   /sucrase@3.34.0:

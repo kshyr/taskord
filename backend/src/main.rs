@@ -1,6 +1,6 @@
 use crate::graphql::schema::AppSchema;
 use async_graphql::http::GraphiQLSource;
-use async_graphql_axum::{GraphQLRequest, GraphQLResponse};
+use async_graphql_axum::{GraphQLRequest, GraphQLResponse, GraphQLSubscription};
 use axum::{
     extract::State,
     headers::HeaderMap,
@@ -20,7 +20,12 @@ type ID = Uuid;
 type Token = String;
 
 async fn graphiql() -> impl IntoResponse {
-    Html(GraphiQLSource::build().endpoint("/").finish())
+    Html(
+        GraphiQLSource::build()
+            .endpoint("/")
+            .subscription_endpoint("/ws")
+            .finish(),
+    )
 }
 
 fn get_auth_token_from_headers(headers: &HeaderMap) -> Option<Token> {
@@ -53,6 +58,7 @@ async fn main() {
     let app = Router::new()
         .route("/", post(graphql_handler))
         .route("/graphiql", get(graphiql))
+        .route_service("/ws", GraphQLSubscription::new(schema.clone()))
         .layer(CorsLayer::permissive())
         .with_state(schema);
 

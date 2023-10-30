@@ -2,10 +2,15 @@
 import type { Task } from "@/src/types/types.ts";
 import { StatusValue } from "@/src/types/types.ts";
 import { useMemo, useState } from "react";
-import { DndContext, DragEndEvent, UniqueIdentifier } from "@dnd-kit/core";
+import { experimental_useOptimistic as useOptimistic } from "react";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { DraggableTask } from "@/src/components/projects/kanban/DraggableTask.tsx";
 import { DroppableColumn } from "@/src/components/projects/kanban/DroppableColumn.tsx";
 import HorizontalScroller from "@/src/components/general/HorizontalScroller.tsx";
+import { getSubscriptionClient } from "@/src/graphql/client.ts";
+import { Session } from "next-auth";
+import { gql } from "graphql-request";
+import { getSession, useSession } from "next-auth/react";
 
 type Column = {
   status: StatusValue;
@@ -62,18 +67,68 @@ export default function KanbanBoard({
   tasks,
   updateTaskStatus,
 }: KanbanBoardProps) {
-  const columns = buildColumns(tasks || []);
+  console.log(tasks?.map((task) => task.status));
+
+  const [optimisticTasks, addOptimisticTask] = useOptimistic<Task[]>(
+    tasks || [],
+    // @ts-ignore
+    (
+      state: Task[],
+      partiallyUpdatedTask: { id: string; status: StatusValue },
+    ) =>
+      state.map((task) => {
+        if (task.id === partiallyUpdatedTask.id) {
+          return {
+            ...task,
+            status: partiallyUpdatedTask.status,
+          };
+        }
+        return task;
+      }),
+  );
+  const columns = useMemo(
+    () => buildColumns(optimisticTasks || []),
+    [optimisticTasks],
+  );
 
   async function handleDragEnd(event: DragEndEvent) {
     const { over, active } = event;
 
     if (over && tasks) {
-      const task = tasks.find((task) => task.id === active.id) as Task;
-      console.log("task", task, "over", over);
+      const task = optimisticTasks.find(
+        (task) => task.id === active.id,
+      ) as Task;
+      addOptimisticTask({
+        id: task.id,
+        status: over.id as StatusValue,
+      });
       const res = await updateTaskStatus(task.id, over.id as StatusValue);
-      console.log(res);
     }
   }
+
+  const { data: session } = useSession();
+
+  if (!session) {
+    return null;
+  }
+
+  const client = getSubscriptionClient(session as Session);
+  client.subscribe(
+    {
+      query: gql`
+        subscription {
+          value(condition: 100)
+        }
+      `,
+    },
+    {
+      error: (err) => console.error(err),
+      next: (data) => {
+        console.log(data);
+      },
+      complete: () => console.log("done"),
+    },
+  );
 
   return (
     <DndContext onDragEnd={handleDragEnd}>

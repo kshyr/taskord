@@ -1,6 +1,7 @@
 schema {
   query: QueryRoot
   mutation: MutationRoot
+  subscription: SubscriptionRoot
 }
 
 type AccessToken {
@@ -45,6 +46,10 @@ type QueryRoot {
   projectById(id: UUID!): Project!
   tags(userId: UUID!): [Tag!]!
   tasks(userId: UUID!): [Task!]!
+}
+
+type SubscriptionRoot {
+  value(condition: Int!): Int!
 }
 
 type Tag {
