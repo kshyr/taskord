@@ -55,12 +55,12 @@ So that's why I call it... **GREEN** stack:
 
 ### Frontend
 
-Let's talk about styling first. I'm using Tailwind for this projects and components from [shadcn/ui](https://ui.shadcn.com/) - which is a very nice way to start your own component library around Radix primitives. 
-I'm trying to put my components in one place, so it's probably at [taskord.app/design](https://taskord.app/design).
+Let's talk about styling first. I'm using Tailwind for this project and components from [shadcn/ui](https://ui.shadcn.com/), which is a very nice way to start your own component library around Radix primitives. 
+I'm trying to maintain design system and components in one place, so they will probably reside at [taskord.app/design](https://taskord.app/design).
 
 <img width="350px" src="https://github.com/kshyr/taskord/assets/60661103/5eecc788-25bb-4cdd-8893-4c0de9e40bb5" />
 
-Now, why Next.js and why do I care? Next includes a set of features that are essential for building SEO-, UX-friendly websites / webapps: routing, caching, SSR and optimizations for images, fonts, etc. With Next.js 13, React Server Components became default way of rendering / data fetching. So this rendering strategy prevents layout shifts (by rendering initial HTML on server), while giving you flexibility to when to wait for data when it's being fetched or when to display loading states.
+Now, why Next.js and why do I care? Next includes a set of features that are essential for building SEO-, UX-friendly websites / webapps: routing, caching, SSR and optimizations for images, fonts, etc. With Next.js 13, React Server Components became default way of rendering / data fetching. This rendering strategy helps preventing layout shifts (by rendering initial HTML on server), while giving you a choice when to wait for data when it's being fetched or when to display loading states.
 All in all, Next.js keeps improving and I'm excited to see what comes next (pun not indended).
 
 ## UI Design
