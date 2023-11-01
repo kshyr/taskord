@@ -2166,6 +2166,7 @@ dependencies = [
  "serde",
  "sqlx",
  "tokio",
+ "tokio-stream",
  "tower-http",
  "uuid",
 ]
@@ -2285,6 +2286,7 @@ dependencies = [
  "futures-core",
  "pin-project-lite",
  "tokio",
+ "tokio-util",
 ]
 
 [[package]]

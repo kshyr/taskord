@@ -4,6 +4,7 @@ use bcrypt::{hash, verify};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
+use tokio::sync::broadcast::Sender;
 
 use crate::graphql::guards::{
     generate_access_token, generate_refresh_token, JwtGuard, JwtRefreshGuard,
@@ -355,6 +356,7 @@ impl MutationRoot {
         status: Option<i16>,
         priority: Option<i16>,
     ) -> Result<Task> {
+        let tx = ctx.data::<Sender<Task>>()?;
         let pool: &PgPool = ctx.data()?;
         let existing_task: Task = sqlx::query_as!(
             Task,
@@ -395,6 +397,9 @@ impl MutationRoot {
         )
         .fetch_one(pool)
         .await?;
+
+        // todo: error handling
+        tx.send(updated_task.clone()).unwrap();
 
         Ok(updated_task)
     }

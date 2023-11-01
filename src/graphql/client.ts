@@ -1,6 +1,5 @@
-import { GraphQLClient } from "graphql-request";
+import { GraphQLClient, GraphQLWebSocketClient } from "graphql-request";
 import { Session } from "next-auth";
-import { createClient } from "graphql-ws";
 
 // if dev, use dev endpoint, else use prod endpoint
 export const apiUrl =
@@ -25,15 +24,20 @@ export async function getQueryClient(session: Session) {
   });
 }
 
-export function getSubscriptionClient(session: Session) {
+export function getSocket() {
+  // todo: fix this
+  const offsetOr = process.env.VERCEL_ENV === "development" ? 4 : 5;
+  return new WebSocket(`ws://localhost:8080/ws`, "graphql-transport-ws");
+}
+
+export function getSubscriptionClient(session: Session, socket: WebSocket) {
   if (!session) {
     throw new Error("No session found");
   }
 
-  const offsetOr = process.env.VERCEL_ENV === "development" ? 0 : 1;
   const url = `ws://localhost:8080/ws`;
 
-  return createClient({ url });
+  return new GraphQLWebSocketClient(socket, {});
 }
 
 type MemoOpts = {

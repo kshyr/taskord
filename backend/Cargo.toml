@@ -17,3 +17,4 @@ uuid = "1.4.1"
 jsonwebtoken = "9.0.0"
 bcrypt = "0.15.0"
 log = "0.4.19"
+tokio-stream = { version = "0.1.14", features = ["sync"] }
