@@ -8,3 +8,5 @@ export function Shared(props: SharedProps) {
     </div>
   );
 }
+
+export * from '../components/ui';

@@ -10,6 +10,7 @@ import {
   useEdgesState,
 } from 'reactflow';
 
+import { ThemeProvider } from '@shared/components/theme-provider';
 import DataModelingEditor from './DataModelingEditor';
 
 import 'reactflow/dist/style.css';
@@ -26,26 +27,28 @@ export default function App() {
   );
 
   return (
-    <PanelGroup autoSaveId="dataModelingEditor" direction="horizontal">
-      <Panel defaultSize={33}>
-        <DataModelingEditor />
-      </Panel>
-      <PanelResizeHandle />
-      <Panel defaultSize={67}>
-        <ReactFlow
-          nodes={nodes}
-          nodeTypes={nodeTypes}
-          onNodesChange={onNodesChange}
-          edges={edges}
-          edgeTypes={edgeTypes}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          fitView
-        >
-          <Background className="bg-gray-950 stroke-gray-900" />
-          <MiniMap className="[&>*]:border [&>*]:border-gray-600 [&>*>*]:stroke-gray-400 [&>*>*]:bg-gray-400 [&>*>rect]:fill-gray-900  [&>*>*]:fill-none [&>*]:bg-gray-950" />
-        </ReactFlow>
-      </Panel>
-    </PanelGroup>
+    <ThemeProvider defaultTheme="dark" storageKey="dataModelingTheme">
+      <PanelGroup autoSaveId="dataModelingEditor" direction="horizontal">
+        <Panel defaultSize={33}>
+          <DataModelingEditor />
+        </Panel>
+        <PanelResizeHandle />
+        <Panel defaultSize={67}>
+          <ReactFlow
+            nodes={nodes}
+            nodeTypes={nodeTypes}
+            onNodesChange={onNodesChange}
+            edges={edges}
+            edgeTypes={edgeTypes}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            fitView
+          >
+            <Background className="bg-background stroke-muted" />
+            <MiniMap className="[&>*]:border [&>*]:border-border [&>*>*]:stroke-gray-400 [&>*>*]:bg-gray-400 [&>*>rect]:fill-gray-900  [&>*>*]:fill-none [&>*]:bg-gray-950" />
+          </ReactFlow>
+        </Panel>
+      </PanelGroup>
+    </ThemeProvider>
   );
 }
