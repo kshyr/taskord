@@ -1,10 +1,7 @@
-const { join } = require('path');
+import autoprefixer from 'autoprefixer';
+import tailwind from 'tailwindcss';
+import tailwindConfig from './tailwind.config.cjs';
 
-module.exports = {
-  plugins: {
-    tailwindcss: {
-      config: join(__dirname, 'tailwind.config.js'),
-    },
-    autoprefixer: {},
-  },
+export default {
+  plugins: [autoprefixer, tailwind(tailwindConfig)],
 };

@@ -14,6 +14,12 @@ export const initialNodes = [
     position: { x: 50, y: 20 },
     data: { label: 'drag me!' },
   },
+  {
+    id: 'c',
+    type: 'output',
+    position: { x: 250, y: 100 },
+    data: { label: 'output' },
+  },
 ] satisfies Node[];
 
 export const nodeTypes = {

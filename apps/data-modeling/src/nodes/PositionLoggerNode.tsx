@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from '@shared';
 import type { NodeProps } from 'reactflow';
-import { Handle, Position } from 'reactflow';
+import { Handle, Position, HandleProps } from 'reactflow';
 
 export type PositionLoggerNodeData = {
   label?: string;
@@ -25,6 +25,7 @@ export function PositionLoggerNode({
   return (
     // We add this class to use the same styles as React Flow's default nodes.
     <Card className="w-[350px]">
+      <Handle type="target" position={Position.Top} />
       <CardHeader>
         <CardTitle>Create project</CardTitle>
         <CardDescription>Deploy your new project in one-click.</CardDescription>
@@ -35,10 +36,10 @@ export function PositionLoggerNode({
         </form>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
+        <Button variant="outline">{data.label}</Button>
         <Button>Deploy</Button>
       </CardFooter>
-      <Handle type="source" position={Position.Bottom} />
+      <Handle type="source" isConnectable position={Position.Bottom} />
     </Card>
   );
 }

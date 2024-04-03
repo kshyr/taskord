@@ -11,7 +11,7 @@ import {
 } from 'reactflow';
 
 import { ThemeProvider } from '@shared/components/theme-provider';
-import DataModelingEditor from './DataModelingEditor';
+import DataModelingEditor from './editor/DataModelingEditor';
 
 import 'reactflow/dist/style.css';
 
@@ -43,6 +43,9 @@ export default function App() {
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             fitView
+            proOptions={{
+              hideAttribution: true,
+            }}
           >
             <Background className="bg-background stroke-muted" />
             <MiniMap className="[&>*]:border [&>*]:border-border [&>*>*]:stroke-gray-400 [&>*>*]:bg-gray-400 [&>*>rect]:fill-gray-900  [&>*>*]:fill-none [&>*]:bg-gray-950" />
