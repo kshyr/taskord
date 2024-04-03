@@ -1,6 +1,5 @@
 import type { OnConnect } from 'reactflow';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
-
 import { useCallback } from 'react';
 import {
   Background,
@@ -10,6 +9,8 @@ import {
   useNodesState,
   useEdgesState,
 } from 'reactflow';
+
+import DataModelingEditor from './DataModelingEditor';
 
 import 'reactflow/dist/style.css';
 
@@ -26,14 +27,11 @@ export default function App() {
 
   return (
     <PanelGroup autoSaveId="dataModelingEditor" direction="horizontal">
-      <Panel defaultSize={25}>
-        <div className="bg-gray-900 text-gray-50 p-4 h-full border-r border-r-gray-800">
-          <h1 className="text-xl font-bold">Data Modeling Editor</h1>
-          <p className="text-lg">This is a work in progress.</p>
-        </div>
+      <Panel defaultSize={33}>
+        <DataModelingEditor />
       </Panel>
       <PanelResizeHandle />
-      <Panel defaultSize={75}>
+      <Panel defaultSize={67}>
         <ReactFlow
           nodes={nodes}
           nodeTypes={nodeTypes}

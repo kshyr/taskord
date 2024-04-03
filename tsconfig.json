@@ -10,11 +10,19 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
+    "jsx": "react-jsx",
+    "allowJs": false,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@shared": ["apps/shared/src/index.ts"],
+      "@shared/*": ["apps/shared/src/*"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
