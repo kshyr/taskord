@@ -12,7 +12,9 @@ import {
 } from 'reactflow';
 
 import { ThemeProvider } from '@shared/components/theme-provider';
-import DataModelingEditor from './editor/DataModelingEditor.js';
+import DataModelingEditor, {
+  DesignDraftSheet,
+} from './editor/DataModelingEditor.js';
 
 import 'reactflow/dist/style.css';
 
@@ -24,6 +26,12 @@ export default function App() {
     {
       path: '/',
       element: <DataModeling />,
+      children: [
+        {
+          path: 'design-draft',
+          element: <DesignDraftSheet />,
+        },
+      ],
     },
   ]);
 
