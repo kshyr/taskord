@@ -10,6 +10,8 @@ import {
   Sheet,
 } from '@shared';
 import DesignDraft from './design-draft.mdx';
+import { useState } from 'react';
+import { useEffect } from 'node_modules/react-resizable-panels/dist/declarations/src/vendor/react';
 
 const entities = [
   {
@@ -95,13 +97,13 @@ export default function DataModelingEditor() {
 }
 
 function DesignDraftSheet() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="outline" size="icon">
-          <QuestionMarkIcon />
-        </Button>
-      </SheetTrigger>
+    <Sheet open={isOpen}>
+      <Button variant="outline" size="icon" onClick={() => setIsOpen(!isOpen)}>
+        <QuestionMarkIcon />
+      </Button>
       <SheetContent
         side="left"
         className="dark:prose-invert prose overflow-y-scroll min-w-[800px]"
