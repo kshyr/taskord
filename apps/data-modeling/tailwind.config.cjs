@@ -6,5 +6,4 @@ module.exports = {
     './src/**/*.{js,jsx,ts,tsx,mdx}',
     '../shared/src/**/*.{js,jsx,ts,tsx,mdx}',
   ],
-  plugins: [],
 };

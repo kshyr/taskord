@@ -1,3 +1,53 @@
-# hey
-## d
+# Design draft
 
+"Data modeling" may be a mislabeling. Purpose of this app is to take a rough-form idea of the user,
+and turn it into a more structured form.
+
+This may be done in a few ways:
+- Set of questions to answer - like a form with a set of inputs with predefined types
+- A set of predefined templates to choose from, with the ability to customize them
+
+In each case, there should be a set of primitives that can be built upon. These primitives should be
+able to be combined in a way that makes sense for the user. They also should be compatible with the
+database data types and exports we want to support.
+
+## Primitives
+
+To facilitate the creation of structured data models, it's essential to define a set of primitives
+that serve as the building blocks for constructing these models. These primitives should align
+with common data types found in databases and provide a flexible framework for users to articulate
+their project ideas effectively. Here are some proposed primitives:
+
+- **Text/String**: A basic data type representing alphanumeric characters.
+This primitive can be used to capture textual information such as names, descriptions, or titles.
+
+- **Number/Numeric**: This primitive encompasses various numeric data types,
+including integers, decimals, and floats.
+It allows users to represent quantitative data such as quantities, prices, or numerical identifiers.
+
+- **Boolean**: A primitive representing binary values,
+typically denoting true or false. Users can employ this primitive
+to model boolean attributes or binary choices within their data.
+
+- **Date/Time**: This primitive covers temporal data, including dates,
+times, or date-time combinations. It enables users to incorporate temporal
+aspects into their data models, such as event dates, deadlines, or timestamps.
+
+- **Enumeration/Enum**: This primitive defines a set of predefined values
+from which users can select. It's useful for representing categorical data with
+a limited number of options, such as status codes, categories, or types.
+
+- **Relation/Reference**: This primitive establishes relationships between
+different entities within the data model. It allows users to link related data together,
+facilitating data organization and integrity.
+
+- **Array/List**: A collection data type that holds multiple values of the same or different types.
+Users can use arrays to represent lists of items, multiple choices, or collections of related data.
+
+- **Object/Dictionary**: This primitive represents a structured collection of key-value pairs.
+It's suitable for modeling complex data structures or nested attributes within the data model.
+
+By offering these primitives, users can construct comprehensive data models that
+accurately reflect their project requirements. Moreover, ensuring compatibility
+with common database data types and export formats enhances
+interoperability and usability across different platforms and systems.

@@ -11,7 +11,7 @@ import {
 } from 'reactflow';
 
 import { ThemeProvider } from '@shared/components/theme-provider';
-import DataModelingEditor from './editor/DataModelingEditor';
+import DataModelingEditor from './editor/DataModelingEditor.js';
 
 import 'reactflow/dist/style.css';
 

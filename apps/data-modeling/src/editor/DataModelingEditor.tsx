@@ -1,5 +1,14 @@
 import { QuestionMarkIcon } from '@radix-ui/react-icons';
-import { Shared, Button } from '@shared';
+import {
+  Shared,
+  Button,
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  SheetTrigger,
+  SheetContent,
+  Sheet,
+} from '@shared';
 import DesignDraft from './design-draft.mdx';
 
 const entities = [
@@ -56,9 +65,7 @@ export default function DataModelingEditor() {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between">
           <h1 className="text-3xl font-bold">Data Modeling Editor</h1>
-          <Button variant="outline" size="icon">
-            <QuestionMarkIcon />
-          </Button>
+          <DesignDraftSheet />
         </div>
         <p className="text-lg">This is a work in progress.</p>
       </div>
@@ -84,5 +91,23 @@ export default function DataModelingEditor() {
         </div>
       </div>
     </div>
+  );
+}
+
+function DesignDraftSheet() {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline" size="icon">
+          <QuestionMarkIcon />
+        </Button>
+      </SheetTrigger>
+      <SheetContent
+        side="left"
+        className="dark:prose-invert prose overflow-y-scroll min-w-[800px]"
+      >
+        <DesignDraft />
+      </SheetContent>
+    </Sheet>
   );
 }
