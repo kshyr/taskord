@@ -15,8 +15,8 @@ import DataModelingEditor from './editor/DataModelingEditor';
 
 import 'reactflow/dist/style.css';
 
-import { initialNodes, nodeTypes } from './nodes';
-import { initialEdges, edgeTypes } from './edges';
+import { initialNodes, nodeTypes } from './canvas/nodes';
+import { initialEdges, edgeTypes } from './canvas/edges';
 
 export default function App() {
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
