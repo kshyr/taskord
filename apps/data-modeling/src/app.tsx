@@ -20,6 +20,8 @@ import 'reactflow/dist/style.css';
 
 import { initialNodes, nodeTypes } from './canvas/nodes';
 import { initialEdges, edgeTypes } from './canvas/edges';
+import useCanvasStore from './lib/store.js';
+import { useShallow } from 'zustand/react/shallow';
 
 export default function App() {
   const router = createBrowserRouter([
@@ -43,12 +45,17 @@ export default function App() {
 }
 
 function DataModeling() {
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const onConnect: OnConnect = useCallback(
-    (connection) => setEdges((edges) => addEdge(connection, edges)),
-    [setEdges]
-  );
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect } =
+    useCanvasStore(
+      useShallow((state) => ({
+        nodes: state.nodes,
+        edges: state.edges,
+        onNodesChange: state.onNodesChange,
+        onEdgesChange: state.onEdgesChange,
+        onConnect: state.onConnect,
+      }))
+    );
+
   return (
     <PanelGroup autoSaveId="dataModelingEditor" direction="horizontal">
       <Panel defaultSize={33}>

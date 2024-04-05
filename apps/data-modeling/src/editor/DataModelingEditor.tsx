@@ -3,8 +3,11 @@ import { Button, SheetContent, Sheet } from '@shared';
 import DesignDraft from './design-draft.mdx';
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import useCanvasStore from '../lib/store';
+import { useShallow } from 'zustand/react/shallow';
 
-const entities = [
+const INITIAL_ENTITIES = [
   {
     name: 'User',
     fields: [
@@ -52,7 +55,35 @@ const entities = [
   },
 ];
 
+type EntityFormInput = {
+  name: string;
+  fields: {
+    name: string;
+    type: string;
+    required: boolean;
+  }[];
+};
+
 export default function DataModelingEditor() {
+  const [entities, setEntities] = useState(INITIAL_ENTITIES);
+  const [fieldsAmount, setFieldsAmount] = useState(1);
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect } =
+    useCanvasStore(
+      useShallow((state) => ({
+        nodes: state.nodes,
+        edges: state.edges,
+        onNodesChange: state.onNodesChange,
+        onEdgesChange: state.onEdgesChange,
+        onConnect: state.onConnect,
+      }))
+    );
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<EntityFormInput>();
+
   return (
     <div className="flex flex-col gap-6 bg-card p-6 h-full border-r border-r-border">
       <div className="flex flex-col gap-4">
@@ -68,6 +99,60 @@ export default function DataModelingEditor() {
       </div>
       <div className="flex flex-col gap-4">
         <h2 className="text-xl font-bold">Entities</h2>
+        <form
+          onSubmit={handleSubmit((data) => setEntities([...entities, data]))}
+        >
+          <div className="flex flex-col gap-4 text-black">
+            <input
+              type="text"
+              placeholder="Entity name"
+              {...register('name', { required: true })}
+            />
+            {Array.from({ length: fieldsAmount }).map((_, index) => (
+              <div key={index} className="flex gap-4">
+                <input
+                  type="text"
+                  placeholder="Field name"
+                  {...register(`fields.${index}.name`, { required: true })}
+                />
+                <select
+                  {...register(`fields.${index}.type`, { required: true })}
+                >
+                  <option value="string">string</option>
+                  <option value="number">number</option>
+                  <option value="boolean">boolean</option>
+                </select>
+                <input
+                  type="checkbox"
+                  {...register(`fields.${index}.required`)}
+                />
+              </div>
+            ))}
+            <div className="flex gap-4">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => setFieldsAmount((prev) => prev + 1)}
+              >
+                Add Field
+              </Button>
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={() => setFieldsAmount((prev) => prev - 1)}
+              >
+                Remove Field
+              </Button>
+            </div>
+            <div className="flex gap-4">
+              <Button type="submit">Add Entity</Button>
+            </div>
+            {errors.name && (
+              <p className="text-red-500">Entity name is required.</p>
+            )}
+          </div>
+        </form>
+        <hr />
         <div className="flex flex-col gap-4">
           {entities.map((entity) => (
             <div key={entity.name} className="flex flex-col gap-2">
