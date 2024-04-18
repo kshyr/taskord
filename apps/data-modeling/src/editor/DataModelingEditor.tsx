@@ -55,7 +55,7 @@ const INITIAL_ENTITIES = [
   },
 ];
 
-type EntityFormInput = {
+export type EntityFormInput = {
   name: string;
   fields: {
     name: string;
@@ -65,24 +65,34 @@ type EntityFormInput = {
 };
 
 export default function DataModelingEditor() {
-  const [entities, setEntities] = useState(INITIAL_ENTITIES);
+  const [entities, setEntities] = useState<EntityFormInput[]>([]);
   const [fieldsAmount, setFieldsAmount] = useState(1);
-  const { nodes, edges, onNodesChange, onEdgesChange, onConnect } =
-    useCanvasStore(
-      useShallow((state) => ({
-        nodes: state.nodes,
-        edges: state.edges,
-        onNodesChange: state.onNodesChange,
-        onEdgesChange: state.onEdgesChange,
-        onConnect: state.onConnect,
-      }))
-    );
+  const { nodes, edges, setNodes, setEdges } = useCanvasStore(
+    useShallow((state) => ({
+      nodes: state.nodes,
+      edges: state.edges,
+      setNodes: state.setNodes,
+      setEdges: state.setEdges,
+    }))
+  );
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<EntityFormInput>();
+
+  const onAddEntity = (data: EntityFormInput) => {
+    setNodes([
+      ...nodes,
+      {
+        id: data.name,
+        type: 'position-logger',
+        position: { x: 0, y: 0 },
+        data,
+      },
+    ]);
+  };
 
   return (
     <div className="flex flex-col gap-6 bg-card p-6 h-full border-r border-r-border">
@@ -99,9 +109,7 @@ export default function DataModelingEditor() {
       </div>
       <div className="flex flex-col gap-4">
         <h2 className="text-xl font-bold">Entities</h2>
-        <form
-          onSubmit={handleSubmit((data) => setEntities([...entities, data]))}
-        >
+        <form onSubmit={handleSubmit(onAddEntity)}>
           <div className="flex flex-col gap-4 text-black">
             <input
               type="text"

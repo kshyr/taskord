@@ -72,6 +72,7 @@ function DataModeling() {
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           fitView
+          fitViewOptions={{ maxZoom: 0.75 }}
           proOptions={{
             hideAttribution: true,
           }}
