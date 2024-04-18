@@ -1,27 +1,13 @@
-import type { OnConnect } from 'reactflow';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
-import { useCallback } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import {
-  Background,
-  MiniMap,
-  ReactFlow,
-  addEdge,
-  useNodesState,
-  useEdgesState,
-} from 'reactflow';
 
 import { ThemeProvider } from '@shared/components/theme-provider';
 import DataModelingEditor, {
   DesignDraftSheet,
 } from './editor/DataModelingEditor.js';
+import DataModelingCanvas from './canvas/DataModelingCanvas.js';
 
 import 'reactflow/dist/style.css';
-
-import { initialNodes, nodeTypes } from './canvas/nodes';
-import { initialEdges, edgeTypes } from './canvas/edges';
-import useCanvasStore from './lib/store.js';
-import { useShallow } from 'zustand/react/shallow';
 
 export default function App() {
   const router = createBrowserRouter([
@@ -45,17 +31,6 @@ export default function App() {
 }
 
 function DataModeling() {
-  const { nodes, edges, onNodesChange, onEdgesChange, onConnect } =
-    useCanvasStore(
-      useShallow((state) => ({
-        nodes: state.nodes,
-        edges: state.edges,
-        onNodesChange: state.onNodesChange,
-        onEdgesChange: state.onEdgesChange,
-        onConnect: state.onConnect,
-      }))
-    );
-
   return (
     <PanelGroup autoSaveId="dataModelingEditor" direction="horizontal">
       <Panel defaultSize={33}>
@@ -63,23 +38,7 @@ function DataModeling() {
       </Panel>
       <PanelResizeHandle />
       <Panel defaultSize={67}>
-        <ReactFlow
-          nodes={nodes}
-          nodeTypes={nodeTypes}
-          onNodesChange={onNodesChange}
-          edges={edges}
-          edgeTypes={edgeTypes}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          fitView
-          fitViewOptions={{ maxZoom: 0.75 }}
-          proOptions={{
-            hideAttribution: true,
-          }}
-        >
-          <Background className="bg-background stroke-muted" />
-          <MiniMap className="[&>*]:border [&>*]:border-border [&>*>*]:stroke-gray-400 [&>*>*]:bg-gray-400 [&>*>rect]:fill-gray-900  [&>*>*]:fill-none [&>*]:bg-gray-950" />
-        </ReactFlow>
+        <DataModelingCanvas />
       </Panel>
     </PanelGroup>
   );

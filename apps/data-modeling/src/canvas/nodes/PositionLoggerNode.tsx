@@ -1,24 +1,9 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@shared';
+import { Card, CardContent, CardHeader, CardTitle } from '@shared';
 import type { NodeProps } from 'reactflow';
-import { Handle, Position, HandleProps } from 'reactflow';
-import { EntityFormInput } from '../../editor/DataModelingEditor';
+import { Handle, Position } from 'reactflow';
+import type { Entity } from '../../types';
 
-export function PositionLoggerNode({
-  xPos,
-  yPos,
-  data,
-}: NodeProps<EntityFormInput>) {
-  const x = `${Math.round(xPos)}px`;
-  const y = `${Math.round(yPos)}px`;
-
+export function PositionLoggerNode({ data }: NodeProps<Entity>) {
   return (
     // We add this class to use the same styles as React Flow's default nodes.
     <Card className="w-[350px]">

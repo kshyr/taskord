@@ -4,68 +4,12 @@ import DesignDraft from './design-draft.mdx';
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import useCanvasStore from '../lib/store';
+import { useCanvasStore, useEditorStore } from '../lib/store';
 import { useShallow } from 'zustand/react/shallow';
-
-const INITIAL_ENTITIES = [
-  {
-    name: 'User',
-    fields: [
-      {
-        name: 'id',
-        type: 'number',
-        required: true,
-      },
-      {
-        name: 'name',
-        type: 'string',
-        required: true,
-      },
-      {
-        name: 'email',
-        type: 'string',
-        required: true,
-      },
-      {
-        name: 'password',
-        type: 'string',
-        required: true,
-      },
-    ],
-  },
-  {
-    name: 'Post',
-    fields: [
-      {
-        name: 'id',
-        type: 'number',
-        required: true,
-      },
-      {
-        name: 'title',
-        type: 'string',
-        required: true,
-      },
-      {
-        name: 'content',
-        type: 'string',
-        required: true,
-      },
-    ],
-  },
-];
-
-export type EntityFormInput = {
-  name: string;
-  fields: {
-    name: string;
-    type: string;
-    required: boolean;
-  }[];
-};
+import type { Entity } from '../types';
 
 export default function DataModelingEditor() {
-  const [entities, setEntities] = useState<EntityFormInput[]>([]);
+  const entities = useEditorStore((state) => state.entities);
   const [fieldsAmount, setFieldsAmount] = useState(1);
   const { nodes, edges, setNodes, setEdges } = useCanvasStore(
     useShallow((state) => ({
@@ -80,9 +24,9 @@ export default function DataModelingEditor() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<EntityFormInput>();
+  } = useForm<Entity>();
 
-  const onAddEntity = (data: EntityFormInput) => {
+  const onAddEntity = (data: Entity) => {
     setNodes([
       ...nodes,
       {

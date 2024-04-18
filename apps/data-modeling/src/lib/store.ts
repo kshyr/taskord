@@ -13,10 +13,12 @@ import {
   applyEdgeChanges,
 } from 'reactflow';
 
-import { initialNodes } from '../canvas/nodes';
+import type { Entity } from '../types';
+
+import { INITIAL_ENTITIES, initialNodes } from '../canvas/nodes';
 import { initialEdges } from '../canvas/edges';
 
-type RFState = {
+type CanvasStoreState = {
   nodes: Node[];
   edges: Edge[];
   onNodesChange: OnNodesChange;
@@ -26,9 +28,8 @@ type RFState = {
   setEdges: (edges: Edge[]) => void;
 };
 
-// this is our useStore hook that we can use in our components to get parts of the store and call actions
-const useCanvasStore = create<RFState>((set, get) => ({
-  nodes: [],
+export const useCanvasStore = create<CanvasStoreState>((set, get) => ({
+  nodes: initialNodes,
   edges: initialEdges,
   onNodesChange: (changes: NodeChange[]) => {
     set({
@@ -53,4 +54,14 @@ const useCanvasStore = create<RFState>((set, get) => ({
   },
 }));
 
-export default useCanvasStore;
+type EditorStoreState = {
+  entities: Entity[];
+  setEntities: (entities: Entity[]) => void;
+};
+
+export const useEditorStore = create<EditorStoreState>((set) => ({
+  entities: INITIAL_ENTITIES,
+  setEntities: (entities: Entity[]) => {
+    set({ entities });
+  },
+}));

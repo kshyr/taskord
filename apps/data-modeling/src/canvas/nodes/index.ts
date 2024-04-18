@@ -1,26 +1,63 @@
 import type { Node, NodeTypes } from 'reactflow';
 import { PositionLoggerNode } from './PositionLoggerNode';
 
-export const initialNodes = [
+export const INITIAL_ENTITIES = [
   {
-    id: 'a',
-    type: 'position-logger',
-    position: { x: -100, y: 100 },
-    data: { label: 'drag me!' },
+    name: 'User',
+    fields: [
+      {
+        name: 'id',
+        type: 'number',
+        required: true,
+      },
+      {
+        name: 'name',
+        type: 'string',
+        required: true,
+      },
+      {
+        name: 'email',
+        type: 'string',
+        required: true,
+      },
+      {
+        name: 'password',
+        type: 'string',
+        required: true,
+      },
+    ],
   },
   {
-    id: 'b',
-    type: 'position-logger',
-    position: { x: 50, y: 20 },
-    data: { label: 'drag me!' },
+    name: 'Post',
+    fields: [
+      {
+        name: 'id',
+        type: 'number',
+        required: true,
+      },
+      {
+        name: 'title',
+        type: 'string',
+        required: true,
+      },
+      {
+        name: 'content',
+        type: 'string',
+        required: true,
+      },
+    ],
   },
-  {
-    id: 'c',
-    type: 'output',
-    position: { x: 250, y: 100 },
-    data: { label: 'output' },
+];
+
+export const initialNodes = INITIAL_ENTITIES.map((entity, index) => ({
+  id: entity.name,
+  type: 'position-logger',
+  data: {
+    name: entity.name,
+    fields: entity.fields,
   },
-] satisfies Node[];
+  position: { x: 250, y: 50 + index * 100 },
+})) satisfies Node[];
 
 export const nodeTypes = {
   'position-logger': PositionLoggerNode,
