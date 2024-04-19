@@ -3,6 +3,7 @@ import type { Node } from 'reactflow';
 import { nodeTypes } from '../canvas/nodes';
 
 export type Entity = {
+  id: string;
   name: string;
   fields: Field[];
 };

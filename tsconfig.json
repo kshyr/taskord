@@ -21,7 +21,9 @@
     "baseUrl": ".",
     "paths": {
       "@shared": ["apps/shared/src/index.ts"],
-      "@shared/*": ["apps/shared/src/*"]
+      "@shared/*": ["apps/shared/src/*"],
+      "@data-modeling": ["apps/data-modeling/src/index.tsx"],
+      "@data-modeling/*": ["apps/data-modeling/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

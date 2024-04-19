@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { useCanvasStore, useEditorStore } from '../lib/store';
 import { useShallow } from 'zustand/react/shallow';
 import type { Entity } from '../types';
+import { createNodeFromEntity } from '../lib/utils';
 
 export default function DataModelingEditor() {
   const entities = useEditorStore((state) => state.entities);
@@ -27,15 +28,8 @@ export default function DataModelingEditor() {
   } = useForm<Entity>();
 
   const onAddEntity = (data: Entity) => {
-    setNodes([
-      ...nodes,
-      {
-        id: data.name,
-        type: 'position-logger',
-        position: { x: 0, y: 0 },
-        data,
-      },
-    ]);
+    const newNode = createNodeFromEntity(data);
+    setNodes([...nodes, newNode]);
   };
 
   return (
