@@ -1,3 +1,4 @@
+'use client';
 import ReactFlow, { Background, MiniMap } from 'reactflow';
 import { useShallow } from 'zustand/react/shallow';
 import { useCanvasStore } from '../util/store';
@@ -33,7 +34,10 @@ export default function DataModelingCanvas() {
       }}
     >
       <Background className="bg-background stroke-muted" />
-      <MiniMap className="[&>*]:border [&>*]:border-border [&>*>*]:stroke-gray-400 [&>*>*]:bg-gray-400 [&>*>rect]:fill-gray-900  [&>*>*]:fill-none [&>*]:bg-gray-950" />
+      <MiniMap
+        className="react-flow__minimap"
+        nodeClassName="react-flow__node"
+      />
     </ReactFlow>
   );
 }

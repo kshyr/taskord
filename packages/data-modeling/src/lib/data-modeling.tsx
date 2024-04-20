@@ -4,8 +4,6 @@ import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import DataModelingEditor from '../editor/DataModelingEditor';
 import DataModelingCanvas from '../canvas/DataModelingCanvas';
 
-import '@shared-ui/globals.css';
-import 'reactflow/dist/style.css';
 import { MarkdownList } from '@shared/web/types';
 
 export function DataModeling({ markdowns }: { markdowns: MarkdownList }) {

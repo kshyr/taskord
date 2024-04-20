@@ -1,6 +1,5 @@
-'use client';
 import { QuestionMarkIcon } from '@radix-ui/react-icons';
-import { Button, SheetContent, Sheet } from '@shared-ui';
+import { Button, SheetContent, Sheet, SheetTrigger } from '@shared-ui';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useCanvasStore, useEditorStore } from '../util/store';
@@ -18,7 +17,6 @@ export default function DataModelingEditor({
 }) {
   const entities = useEditorStore((state) => state.entities);
   const [fieldsAmount, setFieldsAmount] = useState(1);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { nodes, edges, setNodes, setEdges } = useCanvasStore(
     useShallow((state) => ({
       nodes: state.nodes,
@@ -44,13 +42,7 @@ export default function DataModelingEditor({
       <div className="flex flex-col gap-4">
         <div className="flex justify-between">
           <h1 className="text-3xl font-bold">Data Modeling Editor</h1>
-          <Button
-            onClick={() => setIsSheetOpen(true)}
-            variant="outline"
-            size="icon"
-          >
-            <QuestionMarkIcon />
-          </Button>
+          <DesignDraftSheet />
         </div>
         <p className="text-lg">This is a work in progress.</p>
       </div>
@@ -100,7 +92,9 @@ export default function DataModelingEditor({
               </Button>
             </div>
             <div className="flex gap-4">
-              <Button type="submit">Add Entity</Button>
+              <Button type="submit" className="text-white">
+                Add Entity
+              </Button>
             </div>
             {errors.name && (
               <p className="text-red-500">Entity name is required.</p>
@@ -127,17 +121,21 @@ export default function DataModelingEditor({
           ))}
         </div>
       </div>
-      <DesignDraftSheet isOpen={isSheetOpen} />
     </div>
   );
 }
 
-export function DesignDraftSheet({ isOpen }: { isOpen: boolean }) {
+export function DesignDraftSheet() {
   const markdowns = useMarkdownStore((state) => state.markdowns);
   const designDraftMarkdown = markdowns?.DesignDraft;
 
   return (
-    <Sheet open={isOpen}>
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline" size="icon">
+          <QuestionMarkIcon />
+        </Button>
+      </SheetTrigger>
       <SheetContent
         side="left"
         className="dark:prose-invert prose overflow-y-scroll min-w-[800px]"
