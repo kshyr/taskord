@@ -1,16 +1,21 @@
 'use client';
 
 import { useMarkdownStore } from '@shared/web/store';
+import { MarkdownFile, MarkdownHandle } from '@shared/web/types';
 import { useEffect } from 'react';
-export function useSetMarkdown({ markdown }) {
-  const setDesignDraft = useMarkdownStore((state) => state.setDesignDraft);
+
+export function MarkdownSetter({
+  markdown,
+  handle,
+}: {
+  markdown: MarkdownFile;
+  handle: MarkdownHandle;
+}) {
+  const markdowns = useMarkdownStore((state) => state.markdowns);
+  const setMarkdowns = useMarkdownStore((state) => state.setMarkdowns);
 
   useEffect(() => {
-    setDesignDraft(markdown);
-  });
-}
-
-export function MarkdownSetter({ markdown }) {
-  useSetMarkdown({ markdown });
+    setMarkdowns({ ...markdowns, [handle]: markdown });
+  }, [markdown, handle]);
   return null;
 }

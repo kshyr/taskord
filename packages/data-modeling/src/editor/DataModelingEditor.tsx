@@ -127,21 +127,15 @@ export default function DataModelingEditor({
           ))}
         </div>
       </div>
-      <DesignDraftSheet
-        isOpen={isSheetOpen}
-        designDraftMarkdown={markdowns.DesignDraft}
-      />
+      <DesignDraftSheet isOpen={isSheetOpen} />
     </div>
   );
 }
 
-export function DesignDraftSheet({
-  isOpen,
-  designDraftMarkdown,
-}: {
-  isOpen: boolean;
-  designDraftMarkdown: MarkdownFile;
-}) {
+export function DesignDraftSheet({ isOpen }: { isOpen: boolean }) {
+  const markdowns = useMarkdownStore((state) => state.markdowns);
+  const designDraftMarkdown = markdowns?.DesignDraft;
+
   return (
     <Sheet open={isOpen}>
       <SheetContent

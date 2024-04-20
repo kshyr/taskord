@@ -1,8 +1,12 @@
 import { DataModeling } from '@data-modeling';
-import DesignDraft from './design-draft.mdx';
+import { MarkdownSetter } from '../../hooks';
+import { MDXRemote } from 'next-mdx-remote/rsc';
 
-import styles from './page.module.css';
-import { MarkdownFile } from '@shared/web/types';
+async function DesignDraft() {
+  const res = await fetch(process.env.URL + 'mdx/design-draft.mdx');
+  const markdown = await res.text();
+  return <MDXRemote source={markdown} />;
+}
 
 export default function Index() {
   /*
@@ -12,7 +16,7 @@ export default function Index() {
    */
   return (
     <>
-      <DesignDraft />
+      <MarkdownSetter markdown={<DesignDraft />} handle="DesignDraft" />
       <DataModeling markdowns={{ DesignDraft: <DesignDraft /> }} />
     </>
   );
