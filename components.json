@@ -3,13 +3,13 @@
   "style": "default",
   "rsc": false,
   "tailwind": {
-    "config": "apps/shared/tailwind.config.js",
-    "css": "apps/shared/src/globals.css",
+    "config": "packages/shared-ui/tailwind.config.js",
+    "css": "packages/shared-ui/src/globals.css",
     "baseColor": "gray",
     "cssVariables": true
   },
   "aliases": {
-    "components": "@shared/components",
-    "utils": "@shared/utils"
+    "components": "@shared-ui/components",
+    "utils": "@shared-ui/utils"
   }
 }

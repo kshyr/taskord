@@ -1,0 +1,27 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "Bundler",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@data-modeling": ["packages/data-modeling/src/index.ts"],
+      "@data-modeling/*": ["packages/data-modeling/src/*"],
+      "@markdown/*": ["apps/web/markdown/*"],
+      "@shared-ui": ["packages/shared/ui/src/index.ts"],
+      "@shared-ui/*": ["packages/shared/ui/src/*"],
+      "@shared/*": ["packages/shared/*"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

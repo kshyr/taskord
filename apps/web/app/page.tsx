@@ -1,5 +1,3 @@
-import DataModeling from '@data-modeling';
-
 import styles from './page.module.css';
 
 export default function Index() {
@@ -14,7 +12,6 @@ export default function Index() {
         <div className="container">
           <div id="welcome">
             <h1>
-              <DataModeling />
               <span> Hello there, </span>
               Welcome web 👋
             </h1>

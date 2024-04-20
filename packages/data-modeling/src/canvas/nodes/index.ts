@@ -1,8 +1,10 @@
 import type { Node, NodeTypes } from 'reactflow';
 import { PositionLoggerNode } from './PositionLoggerNode';
+import { Entity } from '@data-modeling/types';
 
-export const INITIAL_ENTITIES = [
+export const INITIAL_ENTITIES: Entity[] = [
   {
+    id: '1',
     name: 'User',
     fields: [
       {
@@ -28,6 +30,7 @@ export const INITIAL_ENTITIES = [
     ],
   },
   {
+    id: '2',
     name: 'Post',
     fields: [
       {

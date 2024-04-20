@@ -1,17 +1,18 @@
 'use client';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
-import DataModelingEditor from './editor/DataModelingEditor.js';
-import DataModelingCanvas from './canvas/DataModelingCanvas.js';
+import DataModelingEditor from '../editor/DataModelingEditor';
+import DataModelingCanvas from '../canvas/DataModelingCanvas';
 
-import '@shared/globals.css';
+import '@shared-ui/globals.css';
 import 'reactflow/dist/style.css';
+import { MarkdownList } from '@shared/web/types';
 
-export default function DataModeling() {
+export function DataModeling({ markdowns }: { markdowns: MarkdownList }) {
   return (
     <PanelGroup autoSaveId="dataModelingEditor" direction="horizontal">
       <Panel defaultSize={33}>
-        <DataModelingEditor />
+        <DataModelingEditor markdowns={markdowns} />
       </Panel>
       <PanelResizeHandle />
       <Panel defaultSize={67}>

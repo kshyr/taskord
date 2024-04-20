@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
 
 type Theme = 'dark' | 'light' | 'system';
 
@@ -60,7 +59,6 @@ export function ThemeProvider({
   return (
     <ThemeProviderContext.Provider {...props} value={value}>
       {children}
-      <Outlet />
     </ThemeProviderContext.Provider>
   );
 }

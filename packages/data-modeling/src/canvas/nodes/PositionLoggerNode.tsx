@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@shared';
+import { Card, CardContent, CardHeader, CardTitle } from '@shared-ui';
 import type { NodeProps } from 'reactflow';
 import { Handle, Position } from 'reactflow';
 import type { Entity } from '../../types';

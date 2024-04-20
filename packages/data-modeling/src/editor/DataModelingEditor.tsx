@@ -1,17 +1,24 @@
+'use client';
 import { QuestionMarkIcon } from '@radix-ui/react-icons';
-import { Button, SheetContent, Sheet } from '@shared';
-import DesignDraft from './design-draft.mdx';
+import { Button, SheetContent, Sheet } from '@shared-ui';
 import { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useCanvasStore, useEditorStore } from '../lib/store';
+import { useCanvasStore, useEditorStore } from '../util/store';
 import { useShallow } from 'zustand/react/shallow';
 import type { Entity } from '../types';
-import { createNodeFromEntity } from '../lib/utils';
+import type { MarkdownFile, MarkdownList } from '@shared/web/types';
+import { createNodeFromEntity } from '../util';
+import { useMarkdownStore } from '@shared/web/store';
+import { Element } from 'mdx/types';
 
-export default function DataModelingEditor() {
+export default function DataModelingEditor({
+  markdowns,
+}: {
+  markdowns: MarkdownList;
+}) {
   const entities = useEditorStore((state) => state.entities);
   const [fieldsAmount, setFieldsAmount] = useState(1);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { nodes, edges, setNodes, setEdges } = useCanvasStore(
     useShallow((state) => ({
       nodes: state.nodes,
@@ -37,11 +44,13 @@ export default function DataModelingEditor() {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between">
           <h1 className="text-3xl font-bold">Data Modeling Editor</h1>
-          <Link to="/design-draft">
-            <Button variant="outline" size="icon">
-              <QuestionMarkIcon />
-            </Button>
-          </Link>
+          <Button
+            onClick={() => setIsSheetOpen(true)}
+            variant="outline"
+            size="icon"
+          >
+            <QuestionMarkIcon />
+          </Button>
         </div>
         <p className="text-lg">This is a work in progress.</p>
       </div>
@@ -118,35 +127,28 @@ export default function DataModelingEditor() {
           ))}
         </div>
       </div>
-      <DesignDraftSheet />
+      <DesignDraftSheet
+        isOpen={isSheetOpen}
+        designDraftMarkdown={markdowns.DesignDraft}
+      />
     </div>
   );
 }
 
-export function DesignDraftSheet() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const isDesignDraft = location.pathname === '/design-draft';
-  const [open, setOpen] = useState(isDesignDraft);
-
-  useEffect(() => {
-    setOpen(isDesignDraft);
-  }, [isDesignDraft]);
-
+export function DesignDraftSheet({
+  isOpen,
+  designDraftMarkdown,
+}: {
+  isOpen: boolean;
+  designDraftMarkdown: MarkdownFile;
+}) {
   return (
-    <Sheet
-      open={open}
-      onOpenChange={() => {
-        if (open) {
-          navigate('/');
-        }
-      }}
-    >
+    <Sheet open={isOpen}>
       <SheetContent
         side="left"
         className="dark:prose-invert prose overflow-y-scroll min-w-[800px]"
       >
-        <DesignDraft />
+        {designDraftMarkdown}
       </SheetContent>
     </Sheet>
   );

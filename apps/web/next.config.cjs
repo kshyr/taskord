@@ -1,7 +1,7 @@
 //@ts-check
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { composePlugins, withNx } = require('@nx/next');
+const createMDX = require('@next/mdx');
 
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
@@ -12,10 +12,14 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
 };
+
+const withMDX = createMDX({});
 
 const plugins = [
   // Add more Next.js plugins to this list if needed.
+  withMDX,
   withNx,
 ];
 

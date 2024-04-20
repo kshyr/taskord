@@ -1,6 +1,6 @@
 import ReactFlow, { Background, MiniMap } from 'reactflow';
 import { useShallow } from 'zustand/react/shallow';
-import { useCanvasStore } from '../lib/store';
+import { useCanvasStore } from '../util/store';
 
 import { nodeTypes } from './nodes';
 import { edgeTypes } from './edges';
