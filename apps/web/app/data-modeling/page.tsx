@@ -1,9 +1,11 @@
 import { DataModeling } from '@data-modeling';
+import { BASE_URL } from '@shared/web/constants';
 import { MarkdownSetter } from '../../hooks';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 
 async function DesignDraft() {
-  const res = await fetch(process.env.URL + 'mdx/design-draft.mdx');
+  const url = BASE_URL ?? 'http://localhost:3000/';
+  const res = await fetch(url + 'mdx/design-draft.mdx');
   const markdown = await res.text();
   return <MDXRemote source={markdown} />;
 }
