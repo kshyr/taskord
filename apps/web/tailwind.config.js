@@ -6,6 +6,7 @@ module.exports = {
   content: [
     join(__dirname, 'app/**/*.{js,jsx,ts,tsx,mdx}'),
     join(__dirname, './components/**/*.{js,jsx,ts,tsx,mdx}'),
+    join(__dirname, '../../packages/**/*.{js,jsx,ts,tsx,mdx}'),
     ...createGlobPatternsForDependencies(__dirname),
   ],
   darkMode: ['class'],
