@@ -2,7 +2,9 @@
   "name": "@taskord/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "netlify-build:web": "cd apps/web && next build"
+  },
   "private": true,
   "dependencies": {
     "@mdx-js/loader": "^3.0.1",
@@ -76,4 +78,3 @@
     "vitest": "^1.3.1"
   }
 }
-
