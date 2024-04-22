@@ -4,13 +4,11 @@ import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import DataModelingEditor from '../editor/DataModelingEditor';
 import DataModelingCanvas from '../canvas/DataModelingCanvas';
 
-import { MarkdownList } from '@shared/web/types';
-
-export function DataModeling({ markdowns }: { markdowns: MarkdownList }) {
+export function DataModeling() {
   return (
     <PanelGroup autoSaveId="dataModelingEditor" direction="horizontal">
       <Panel defaultSize={33}>
-        <DataModelingEditor markdowns={markdowns} />
+        <DataModelingEditor />
       </Panel>
       <PanelResizeHandle />
       <Panel defaultSize={67}>

@@ -48,3 +48,4 @@ out
 
 # envvar
 .env
+.env*.local

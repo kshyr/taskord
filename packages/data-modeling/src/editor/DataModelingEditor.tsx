@@ -10,11 +10,7 @@ import { createNodeFromEntity } from '../util';
 import { useMarkdownStore } from '@shared/web/store';
 import { Element } from 'mdx/types';
 
-export default function DataModelingEditor({
-  markdowns,
-}: {
-  markdowns: MarkdownList;
-}) {
+export default function DataModelingEditor() {
   const entities = useEditorStore((state) => state.entities);
   const [fieldsAmount, setFieldsAmount] = useState(1);
   const { nodes, edges, setNodes, setEdges } = useCanvasStore(
