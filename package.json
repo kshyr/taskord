@@ -1,6 +1,6 @@
 {
   "name": "@taskord/source",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "netlify-build:web": "nx build web --prod && cd apps/web && next build"
