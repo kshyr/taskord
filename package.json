@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "netlify-build:web": "nx build web --prod && cd apps/web && next build"
+    "netlify-build:web": "pnpm dlx nx reset && pnpm dlx nx build web --prod && cd apps/web && next build"
   },
   "private": true,
   "dependencies": {
