@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "netlify-build:web": "cd apps/web && next build"
+    "netlify-build:web": "nx build web --prod && cd apps/web && next build"
   },
   "private": true,
   "dependencies": {
