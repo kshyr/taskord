@@ -19,7 +19,6 @@ node_modules
 
 # IDE - VSCode
 .vscode/*
-.vscode
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -40,12 +39,4 @@ testem.log
 Thumbs.db
 
 .nx/cache
-
-# Next.js
-.next
-out
-.vercel
-
-# envvar
-.env
-.env*.local
+.nx/workspace-data

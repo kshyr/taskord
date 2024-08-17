@@ -1,21 +1,12 @@
 package main
 
-import (
-	"net/http"
+import "fmt"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
-)
+func Hello(name string) string {
+	result := "Hello " + name
+	return result
+}
 
 func main() {
-	r := chi.NewRouter()
-	r.Use(middleware.RequestID)
-	r.Use(middleware.Logger)
-	r.Use(middleware.Recoverer)
-
-	r.Get("/", func(w http.ResponseWriter, _ *http.Request) {
-		w.Write([]byte("hello world"))
-	})
-
-	http.ListenAndServe(":3333", r)
+	fmt.Println(Hello("server"))
 }

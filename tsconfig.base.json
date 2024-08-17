@@ -4,7 +4,7 @@
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "Bundler",
+    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
@@ -14,14 +14,7 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {
-      "@data-modeling": ["packages/data-modeling/src/index.ts"],
-      "@data-modeling/*": ["packages/data-modeling/src/*"],
-      "@markdown/*": ["apps/web/markdown/*"],
-      "@shared-ui": ["packages/shared/ui/src/index.ts"],
-      "@shared-ui/*": ["packages/shared/ui/src/*"],
-      "@shared/*": ["packages/shared/*"]
-    }
+    "paths": {}
   },
   "exclude": ["node_modules", "tmp"]
 }

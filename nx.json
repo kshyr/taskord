@@ -7,11 +7,24 @@
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/.eslintrc.json",
-      "!{projectRoot}/eslint.config.js"
+      "!{projectRoot}/eslint.config.js",
+      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/src/test-setup.[jt]s",
+      "!{projectRoot}/test-setup.[jt]s"
     ],
     "sharedGlobals": ["{workspaceRoot}/go.work"]
   },
   "plugins": [
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "testTargetName": "test",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "serveStaticTargetName": "serve-static"
+      }
+    },
     {
       "plugin": "@nx/eslint/plugin",
       "options": {
@@ -19,12 +32,9 @@
       }
     },
     {
-      "plugin": "@nx/next/plugin",
+      "plugin": "@nx/jest/plugin",
       "options": {
-        "buildTargetName": "build",
-        "devTargetName": "dev",
-        "startTargetName": "start",
-        "serveStaticTargetName": "serve-static"
+        "targetName": "test"
       }
     },
     "@nx-go/nx-go"
@@ -42,16 +52,8 @@
       },
       "library": {
         "style": "tailwind",
-        "linter": "eslint",
-        "unitTestRunner": "none"
-      }
-    },
-    "@nx/next": {
-      "application": {
-        "style": "css",
         "linter": "eslint"
       }
     }
-  },
-  "nxCloudAccessToken": "OTRkYTViM2QtZmYxZC00NDY4LWJkYjQtMjg1ZjQ0MTM5ZTg5fHJlYWQtd3JpdGU="
+  }
 }
